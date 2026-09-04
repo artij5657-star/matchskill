@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+
+{% block title %}SkillMatch | Smart Career Matching{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="container hero-grid">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                🚀 AI-Powered Career Matching
+            </div>
+
+            <h1>
+                Find the Right
+                <span>Opportunity</span>
+                for Your Skills
+            </h1>
+
+            <p>
+                SkillMatch uses your skills, interests and resume
+                to intelligently connect you with jobs and projects
+                that match your profile.
+            </p>
+
+            <div class="hero-actions">
+                <a href="{{ url_for('register') }}" class="btn btn-primary">
+                    Get Started →
+                </a>
+
+                <a href="{{ url_for('login') }}" class="btn btn-outline">
+                    Login
+                </a>
+            </div>
+
+        </div>
+
+
+        <!-- Match Preview -->
+        <div class="match-preview">
+
+            <div class="score-box">
+
+                <div class="score-label">
+                    AI MATCH SCORE
+                </div>
+
+                <div class="score">
+                    94%
+                </div>
+
+                <div class="score-text">
+                    ✨ Excellent Match!
+                </div>
+
+            </div>
+
+
+            <div class="match-card">
+
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">Data Science</span>
+                    <span class="tag">SQL</span>
+                </div>
+
+                <h3 style="margin-top:18px;">
+                    💼 ML Engineer
+                </h3>
+
+                <p>
+                    Recommended for you
+                </p>
+
+                <a href="{{ url_for('register') }}"
+                   style="color:#635bdf;font-weight:700;">
+                    View Opportunity →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="section" id="features">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                WHAT WE OFFER
+            </div>
+
+            <h2>
+                Everything You Need to
+                <span style="color:#6861df;">
+                    Find Your Match
+                </span>
+            </h2>
+
+            <p>
+                SkillMatch simplifies the process of discovering
+                opportunities that actually fit your skills.
+            </p>
+
+        </div>
+
+
+        <div class="features-grid">
+
+            <!-- Feature 1 -->
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📄
+                </div>
+
+                <h3>
+                    AI Resume Screening
+                </h3>
+
+                <p>
+                    Upload your resume and automatically extract
+                    important skills, technologies and interests.
+                </p>
+
+            </div>
+
+
+            <!-- Feature 2 -->
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🎯
+                </div>
+
+                <h3>
+                    Smart Skill Matching
+                </h3>
+
+                <p>
+                    Get intelligent matches based on your skills,
+                    experience and interests.
+                </p>
+
+            </div>
+
+
+            <!-- Feature 3 -->
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💼
+                </div>
+
+                <h3>
+                    Job Matching
+                </h3>
+
+                <p>
+                    Discover job opportunities that match your
+                    technical and professional skills.
+                </p>
+
+            </div>
+
+
+            <!-- Feature 4 -->
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🚀
+                </div>
+
+                <h3>
+                    Project Matching
+                </h3>
+
+                <p>
+                    Find projects and project teams where your
+                    skills can make an impact.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section class="section" id="how-it-works">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                SIMPLE PROCESS
+            </div>
+
+            <h2>
+                How SkillMatch Works
+            </h2>
+
+            <p>
+                Get matched with the right opportunities
+                in four simple steps.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <!-- Step 1 -->
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Create Your Profile
+                </h3>
+
+                <p>
+                    Register and add your education, skills,
+                    interests and experience.
+                </p>
+
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Upload Resume
+                </h3>
+
+                <p>
+                    Upload your resume and let SkillMatch
+                    analyze your skills automatically.
+                </p>
+
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    Get Matches
+                </h3>
+
+                <p>
+                    Our matching system compares your profile
+                    with available opportunities.
+                </p>
+
+            </div>
+
+
+            <!-- Step 4 -->
+            <div class="step">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <h3>
+                    Apply & Connect
+                </h3>
+
+                <p>
+                    Explore recommended jobs and projects
+                    and connect with opportunity owners.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta">
+
+    <h2>
+        Ready to Find Your Perfect Match?
+    </h2>
+
+    <p>
+        Create your SkillMatch profile and discover
+        opportunities designed around your skills.
+    </p>
+
+    <a href="{{ url_for('register') }}"
+       class="btn btn-light">
+        Create Free Profile →
+    </a>
+
+</section>
+
+{% endblock %}

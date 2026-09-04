@@ -1,0 +1,855 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account | SkillMatch{% endblock %}
+
+{% block content %}
+
+<section class="register-center-page">
+
+    <div class="register-center-card">
+
+        <!-- Logo -->
+        <div class="register-logo">
+            <span>✦</span>
+            Skill<span>Match</span>
+        </div>
+
+        <!-- Icon -->
+        <div class="register-icon">
+            🚀
+        </div>
+
+        <h1>Create Account</h1>
+
+        <p class="register-subtitle">
+            Join SkillMatch and discover new opportunities.
+        </p>
+
+
+        <!-- Registration Form -->
+        <form method="POST" action="{{ url_for('register') }}" id="registerForm">
+
+            <!-- Full Name -->
+            <div class="register-form-group">
+
+                <label for="name">Full Name</label>
+
+                <div class="register-input">
+                    <span>👤</span>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+            </div>
+
+
+            <!-- Mobile Number -->
+            <div class="register-form-group">
+
+                <label for="phone">Mobile Number</label>
+
+                <div class="register-input">
+                    <span>📱</span>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter 10-digit mobile number"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        required
+                    >
+                </div>
+
+            </div>
+
+
+            <!-- Email -->
+            <div class="register-form-group">
+
+                <label for="email">Email Address</label>
+
+                <div class="register-input">
+                    <span>✉</span>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        required
+                    >
+                </div>
+
+            </div>
+
+
+            <!-- Education -->
+            <div class="register-form-group">
+
+                <label for="education">Education</label>
+
+                <div class="register-input">
+                    <span>🎓</span>
+
+                    <select
+                        id="education"
+                        name="education"
+                        required
+                    >
+                        <option value="" disabled selected>
+                            Select your education
+                        </option>
+
+                        <option value="Diploma">Diploma</option>
+                        <option value="B.E / B.Tech">B.E / B.Tech</option>
+                        <option value="B.Sc">B.Sc</option>
+                        <option value="BCA">BCA</option>
+                        <option value="M.E / M.Tech">M.E / M.Tech</option>
+                        <option value="M.Sc">M.Sc</option>
+                        <option value="MCA">MCA</option>
+                        <option value="Other">Other</option>
+
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- User Type -->
+            <div class="register-form-group">
+
+                <label for="user_type">User Type</label>
+
+                <div class="register-input">
+                    <span>👥</span>
+
+                    <select
+                        id="user_type"
+                        name="user_type"
+                        required
+                    >
+                        <option value="" disabled selected>
+                            Select user type
+                        </option>
+
+                        <option value="Student">
+                            Student
+                        </option>
+
+                        <option value="Professional">
+                            Professional
+                        </option>
+
+                        <option value="Project Owner">
+                            Project Owner
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="register-form-group">
+
+                <label for="password">Create Password</label>
+
+                <div class="register-input">
+
+                    <span>🔒</span>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a strong password"
+                        required
+                        minlength="6"
+                    >
+
+                    <button
+                        type="button"
+                        class="register-eye"
+                        onclick="togglePassword('password')"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Confirm Password -->
+            <div class="register-form-group">
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+                <div class="register-input">
+
+                    <span>🔐</span>
+
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        placeholder="Re-enter your password"
+                        required
+                        minlength="6"
+                    >
+
+                    <button
+                        type="button"
+                        class="register-eye"
+                        onclick="togglePassword('confirm_password')"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Terms -->
+            <div class="register-terms">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="terms"
+                        required
+                    >
+
+                    <span>
+                        I agree to the
+                        <a href="#" onclick="return false;">
+                            Terms & Conditions
+                        </a>
+                        and
+                        <a href="#" onclick="return false;">
+                            Privacy Policy
+                        </a>.
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- Create Account Button -->
+            <button
+                type="submit"
+                class="register-button"
+            >
+                Create My Account
+                <span>→</span>
+            </button>
+
+        </form>
+
+
+        <!-- Login -->
+        <div class="register-divider">
+            <span>Already have an account?</span>
+        </div>
+
+        <a
+            href="{{ url_for('login') }}"
+            class="register-login-button"
+        >
+            Login to SkillMatch
+            <span>→</span>
+        </a>
+
+
+        <!-- Security -->
+        <div class="register-security">
+            🔒 Your information is securely protected.
+        </div>
+
+    </div>
+
+</section>
+
+
+<style>
+
+/* ================================
+   CENTER REGISTER PAGE
+================================ */
+
+.register-center-page {
+
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 50px 20px;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(118, 87, 255, 0.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(255, 190, 120, 0.15),
+            transparent 30%
+        ),
+        #f8f9ff;
+
+    box-sizing: border-box;
+}
+
+
+/* CARD */
+
+.register-center-card {
+
+    width: 100%;
+
+    max-width: 480px;
+
+    background: rgba(255,255,255,0.97);
+
+    border: 1px solid #eceaf5;
+
+    border-radius: 28px;
+
+    padding: 36px 42px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 25px 70px rgba(45,40,90,0.12),
+        0 5px 20px rgba(45,40,90,0.05);
+
+}
+
+
+/* LOGO */
+
+.register-logo {
+
+    text-align: center;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    color: #27273a;
+
+    margin-bottom: 20px;
+
+}
+
+.register-logo span:first-child {
+
+    display: inline-flex;
+
+    width: 35px;
+
+    height: 35px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 7px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #7657ff,
+        #9a7cff
+    );
+
+    color: white;
+
+}
+
+.register-logo span:last-child {
+
+    color: #7657ff;
+
+}
+
+
+/* ICON */
+
+.register-icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 18px;
+
+    font-size: 26px;
+
+    background: linear-gradient(
+        135deg,
+        #eeeaff,
+        #fff2df
+    );
+
+}
+
+
+/* TITLE */
+
+.register-center-card h1 {
+
+    text-align: center;
+
+    margin: 0;
+
+    font-size: 27px;
+
+    color: #25253a;
+
+}
+
+.register-subtitle {
+
+    text-align: center;
+
+    color: #88889b;
+
+    font-size: 13px;
+
+    margin: 8px 0 25px;
+
+}
+
+
+/* FORM */
+
+.register-form-group {
+
+    margin-bottom: 16px;
+
+}
+
+.register-form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #3a3a4d;
+
+}
+
+
+/* INPUT */
+
+.register-input {
+
+    height: 50px;
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 14px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e4e3ed;
+
+    border-radius: 13px;
+
+    background: #fafaff;
+
+    transition: 0.25s;
+
+}
+
+.register-input:focus-within {
+
+    border-color: #8064ff;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 4px rgba(128,100,255,0.09);
+
+}
+
+.register-input > span {
+
+    font-size: 16px;
+
+    opacity: 0.65;
+
+}
+
+.register-input input {
+
+    flex: 1;
+
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    font-size: 13px;
+
+    color: #303044;
+
+}
+
+.register-input input::placeholder {
+
+    color: #aaaabb;
+
+}
+
+
+/* SELECT */
+
+.register-input select {
+
+    flex: 1;
+
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    font-size: 13px;
+
+    color: #303044;
+
+    cursor: pointer;
+
+}
+
+.register-input select:invalid {
+
+    color: #aaaabb;
+
+}
+
+.register-input select option {
+
+    color: #303044;
+
+    background: white;
+
+}
+
+
+/* EYE */
+
+.register-eye {
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    opacity: 0.6;
+
+}
+
+
+/* TERMS */
+
+.register-terms {
+
+    margin: 5px 0 19px;
+
+}
+
+.register-terms label {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    color: #858598;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    cursor: pointer;
+
+}
+
+.register-terms input {
+
+    margin-top: 2px;
+
+    accent-color: #7657ff;
+
+}
+
+.register-terms a {
+
+    color: #7657ff;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+}
+
+
+/* CREATE BUTTON */
+
+.register-button {
+
+    width: 100%;
+
+    height: 52px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: linear-gradient(
+        135deg,
+        #7657ff,
+        #967aff
+    );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    box-shadow:
+        0 12px 25px rgba(118,87,255,0.25);
+
+    transition: 0.25s;
+
+}
+
+.register-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 30px rgba(118,87,255,0.32);
+
+}
+
+.register-button span {
+
+    font-size: 18px;
+
+}
+
+
+/* DIVIDER */
+
+.register-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 23px 0 15px;
+
+    color: #aaaabc;
+
+    font-size: 11px;
+
+}
+
+.register-divider::before,
+.register-divider::after {
+
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #ececf2;
+
+}
+
+
+/* LOGIN BUTTON */
+
+.register-login-button {
+
+    height: 47px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    border: 1px solid #ddd8ff;
+
+    border-radius: 12px;
+
+    background: #faf9ff;
+
+    color: #7254f5;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition: 0.25s;
+
+}
+
+.register-login-button:hover {
+
+    background: #f1edff;
+
+    border-color: #cfc5ff;
+
+}
+
+
+/* SECURITY */
+
+.register-security {
+
+    text-align: center;
+
+    margin-top: 18px;
+
+    color: #aaaabc;
+
+    font-size: 10px;
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 520px) {
+
+    .register-center-page {
+
+        padding: 30px 15px;
+
+    }
+
+    .register-center-card {
+
+        padding: 30px 22px;
+
+        border-radius: 22px;
+
+    }
+
+    .register-center-card h1 {
+
+        font-size: 25px;
+
+    }
+
+}
+
+</style>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("registerForm");
+
+    if (!form) return;
+
+    form.addEventListener("submit", function (event) {
+
+        const password =
+            document.getElementById("password").value;
+
+        const confirmPassword =
+            document.getElementById("confirm_password").value;
+
+        if (password !== confirmPassword) {
+
+            event.preventDefault();
+
+            alert("Passwords do not match.");
+
+            document
+                .getElementById("confirm_password")
+                .focus();
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,770 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resume Screening | SkillMatch</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <span>Skill</span>Match
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('index') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                Profile
+            </a>
+
+            <a href="{{ url_for('resume') }}" class="active">
+                Resume
+            </a>
+
+            <a href="{{ url_for('matches') }}">
+                Matches
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="resume-page">
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div>
+
+                <span class="section-label">
+                    AI RESUME SCREENING
+                </span>
+
+                <h1>
+                    Analyze Your <span>Resume</span>
+                </h1>
+
+                <p>
+                    Upload your resume and let SkillMatch identify
+                    your skills and calculate your profile match score.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <div class="resume-grid">
+
+
+            <!-- ================= UPLOAD CARD ================= -->
+
+            <div class="resume-upload-card">
+
+                <div class="card-icon">
+                    📄
+                </div>
+
+                <h2>
+                    Upload Your Resume
+                </h2>
+
+                <p>
+                    Upload your latest resume to automatically
+                    extract your skills.
+                </p>
+
+
+                <form
+                    action="{{ url_for('resume') }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    id="resumeForm"
+                >
+
+                    <!-- DROP ZONE -->
+
+                    <div class="upload-box"
+                         id="uploadBox">
+
+                        <input
+                            type="file"
+                            id="resume"
+                            name="resume"
+                            accept=".pdf,.docx,.doc"
+                            required
+                        >
+
+                        <div class="upload-content">
+
+                            <div class="upload-icon">
+                                ⬆
+                            </div>
+
+                            <h3>
+                                Drag & Drop your resume
+                            </h3>
+
+                            <p>
+                                or
+                                <span>browse files</span>
+                            </p>
+
+                            <small>
+                                PDF, DOC or DOCX • Maximum 10 MB
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SELECTED FILE -->
+
+                    <div
+                        class="selected-file"
+                        id="selectedFile"
+                        style="display: none;"
+                    >
+
+                        <div class="file-icon">
+                            📄
+                        </div>
+
+                        <div class="file-info">
+
+                            <strong id="fileName">
+                                Resume.pdf
+                            </strong>
+
+                            <span id="fileSize">
+                                0 KB
+                            </span>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            onclick="removeFile()"
+                            class="remove-file"
+                        >
+                            ✕
+                        </button>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="primary-btn upload-btn"
+                    >
+                        Analyze Resume ✨
+                    </button>
+
+                </form>
+
+
+                <div class="privacy-note">
+
+                    🔒
+                    <span>
+                        Your resume is securely processed and
+                        used only for skill matching.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= SCREENING RESULT ================= -->
+
+            <div class="resume-result-card">
+
+                {% if user.resume_filename %}
+
+                    <!-- RESULT AVAILABLE -->
+
+                    <div class="result-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                SCREENING RESULT
+                            </span>
+
+                            <h2>
+                                Resume Analysis
+                            </h2>
+
+                        </div>
+
+                        <div class="success-icon">
+                            ✓
+                        </div>
+
+                    </div>
+
+
+                    <!-- SCORE -->
+
+                    <div class="score-container">
+
+                        <div class="score-circle">
+
+                            <div>
+
+                                <strong>
+                                    {{ user.resume_score or 0 }}%
+                                </strong>
+
+                                <span>
+                                    Match Score
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SCORE MESSAGE -->
+
+                    {% if user.resume_score and user.resume_score >= 80 %}
+
+                        <div class="score-message excellent">
+
+                            <strong>
+                                Excellent Resume! 🎉
+                            </strong>
+
+                            <p>
+                                Your resume contains strong skills
+                                for available opportunities.
+                            </p>
+
+                        </div>
+
+                    {% elif user.resume_score and user.resume_score >= 60 %}
+
+                        <div class="score-message good">
+
+                            <strong>
+                                Good Resume! 👍
+                            </strong>
+
+                            <p>
+                                Your profile has several useful skills.
+                                Add more relevant skills to improve your score.
+                            </p>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="score-message improve">
+
+                            <strong>
+                                Keep Improving 💡
+                            </strong>
+
+                            <p>
+                                Add more technical skills and projects
+                                to improve your matching score.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- EXTRACTED SKILLS -->
+
+                    <div class="result-section">
+
+                        <h3>
+                            Extracted Skills
+                        </h3>
+
+                        {% if user.skills %}
+
+                            <div class="skill-tags">
+
+                                {% for skill in user.skills %}
+
+                                    <span class="skill-tag">
+                                        {{ skill }}
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% else %}
+
+                            <p class="empty-text">
+                                No skills were detected yet.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- RESUME FILE -->
+
+                    <div class="resume-file">
+
+                        <div class="file-icon">
+                            📄
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ user.resume_filename }}
+                            </strong>
+
+                            <p>
+                                Resume uploaded successfully
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="{{ url_for('static',
+                                filename='uploads/' ~ user.resume_filename) }}"
+                            target="_blank"
+                            class="view-resume"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+
+                {% else %}
+
+                    <!-- NO RESUME -->
+
+                    <div class="empty-result">
+
+                        <div class="empty-icon">
+                            🤖
+                        </div>
+
+                        <h2>
+                            No Resume Analyzed Yet
+                        </h2>
+
+                        <p>
+                            Upload your resume to see your AI
+                            screening results here.
+                        </p>
+
+                        <div class="empty-features">
+
+                            <div>
+                                <span>✓</span>
+                                Skill Extraction
+                            </div>
+
+                            <div>
+                                <span>✓</span>
+                                Resume Score
+                            </div>
+
+                            <div>
+                                <span>✓</span>
+                                Smart Matching
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= HOW SCREENING WORKS ================= -->
+
+        <section class="screening-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    HOW IT WORKS
+                </span>
+
+                <h2>
+                    Smart Resume <span>Screening</span>
+                </h2>
+
+                <p>
+                    SkillMatch analyzes your resume in three simple steps.
+                </p>
+
+            </div>
+
+
+            <div class="screening-steps">
+
+
+                <!-- STEP 1 -->
+
+                <div class="screening-step">
+
+                    <div class="step-icon">
+                        📤
+                    </div>
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Upload
+                    </h3>
+
+                    <p>
+                        Upload your PDF or DOCX resume.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 2 -->
+
+                <div class="screening-step">
+
+                    <div class="step-icon">
+                        🔍
+                    </div>
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Analyze
+                    </h3>
+
+                    <p>
+                        The system extracts relevant skills
+                        from your resume.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 3 -->
+
+                <div class="screening-step">
+
+                    <div class="step-icon">
+                        🎯
+                    </div>
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Match
+                    </h3>
+
+                    <p>
+                        Your skills are compared with available
+                        jobs and projects.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 SkillMatch. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        const resumeInput =
+            document.getElementById("resume");
+
+        const uploadBox =
+            document.getElementById("uploadBox");
+
+        const selectedFile =
+            document.getElementById("selectedFile");
+
+        const fileName =
+            document.getElementById("fileName");
+
+        const fileSize =
+            document.getElementById("fileSize");
+
+
+        // File selected
+
+        resumeInput.addEventListener("change", function () {
+
+            showSelectedFile(this.files[0]);
+
+        });
+
+
+        // Display selected file
+
+        function showSelectedFile(file) {
+
+            if (!file) {
+                return;
+            }
+
+            fileName.textContent =
+                file.name;
+
+            fileSize.textContent =
+                formatFileSize(file.size);
+
+            selectedFile.style.display =
+                "flex";
+
+            uploadBox.classList.add("has-file");
+
+        }
+
+
+        // Format file size
+
+        function formatFileSize(bytes) {
+
+            if (bytes === 0) {
+                return "0 KB";
+            }
+
+            const units =
+                ["Bytes", "KB", "MB"];
+
+            const i =
+                Math.floor(
+                    Math.log(bytes) / Math.log(1024)
+                );
+
+            return (
+                parseFloat(
+                    (bytes /
+                    Math.pow(1024, i))
+                    .toFixed(2)
+                )
+                + " "
+                + units[i]
+            );
+
+        }
+
+
+        // Remove selected file
+
+        function removeFile() {
+
+            resumeInput.value = "";
+
+            selectedFile.style.display =
+                "none";
+
+            uploadBox.classList.remove("has-file");
+
+        }
+
+
+        // Drag and drop
+
+        uploadBox.addEventListener(
+            "dragover",
+            function (event) {
+
+                event.preventDefault();
+
+                uploadBox.classList.add("dragging");
+
+            }
+        );
+
+
+        uploadBox.addEventListener(
+            "dragleave",
+            function () {
+
+                uploadBox.classList.remove("dragging");
+
+            }
+        );
+
+
+        uploadBox.addEventListener(
+            "drop",
+            function (event) {
+
+                event.preventDefault();
+
+                uploadBox.classList.remove("dragging");
+
+                const files =
+                    event.dataTransfer.files;
+
+                if (files.length > 0) {
+
+                    resumeInput.files =
+                        files;
+
+                    showSelectedFile(files[0]);
+
+                }
+
+            }
+        );
+
+
+        // File validation
+
+        document
+            .getElementById("resumeForm")
+            .addEventListener(
+                "submit",
+                function (event) {
+
+                    const file =
+                        resumeInput.files[0];
+
+                    if (!file) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Please select a resume."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const allowedTypes =
+                        [
+                            "application/pdf",
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                            "application/msword"
+                        ];
+
+
+                    if (!allowedTypes.includes(file.type)) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Please upload a PDF, DOC or DOCX file."
+                        );
+
+                        return;
+
+                    }
+
+
+                    // 10 MB limit
+
+                    const maxSize =
+                        10 * 1024 * 1024;
+
+                    if (file.size > maxSize) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "File size must be less than 10 MB."
+                        );
+
+                        return;
+
+                    }
+
+                }
+            );
+
+    </script>
+
+</body>
+
+</html>
+```

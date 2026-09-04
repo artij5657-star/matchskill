@@ -1,0 +1,687 @@
+{% extends "base.html" %}
+
+{% block title %}Login | SkillMatch{% endblock %}
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="auth-container">
+
+        <!-- Left Side -->
+        <div class="auth-info">
+
+            <div class="auth-brand">
+                <span class="brand-icon">✦</span>
+                <span>Skill<span class="brand-highlight">Match</span></span>
+            </div>
+
+            <div class="auth-info-content">
+
+                <span class="auth-label">WELCOME BACK</span>
+
+                <h1>
+                    Your next opportunity
+                    <span>starts here.</span>
+                </h1>
+
+                <p>
+                    Login to SkillMatch and discover jobs, projects,
+                    and opportunities that match your skills.
+                </p>
+
+                <div class="auth-benefits">
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✓</div>
+                        <div>
+                            <strong>Smart Skill Matching</strong>
+                            <small>Find opportunities based on your skills.</small>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✓</div>
+                        <div>
+                            <strong>AI Resume Screening</strong>
+                            <small>Get insights from your resume.</small>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✓</div>
+                        <div>
+                            <strong>Personalized Opportunities</strong>
+                            <small>Discover jobs and projects made for you.</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Login Card -->
+        <div class="auth-card-modern">
+
+            <div class="auth-card-header">
+
+                <div class="auth-circle-icon">
+                    🔐
+                </div>
+
+                <h2>Welcome Back!</h2>
+
+                <p>
+                    Login to continue to your SkillMatch account.
+                </p>
+
+            </div>
+
+
+            <!-- Flask Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="auth-messages">
+
+                        {% for category, message in messages %}
+                            <div class="auth-alert auth-alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+
+            <form method="POST" action="{{ url_for('login') }}">
+
+                <!-- Email -->
+                <div class="modern-form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="modern-input"
+                            placeholder="Enter your email"
+                            required
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="modern-form-group">
+
+                    <div class="label-row">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <a href="#" class="forgot-link">
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="modern-input password-input"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('password')"
+                            aria-label="Show password"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Remember Me -->
+                <div class="remember-row">
+
+                    <label class="remember-label">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                        >
+
+                        <span>Remember me</span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- Login Button -->
+                <button
+                    type="submit"
+                    class="modern-submit"
+                >
+
+                    <span>Login to SkillMatch</span>
+
+                    <span class="submit-arrow">→</span>
+
+                </button>
+
+            </form>
+
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>New to SkillMatch?</span>
+            </div>
+
+
+            <!-- Register -->
+            <div class="auth-bottom">
+
+                <p>
+                    Don't have an account?
+                </p>
+
+                <a
+                    href="{{ url_for('register') }}"
+                    class="create-account-btn"
+                >
+                    Create an Account
+                    <span>→</span>
+                </a>
+
+            </div>
+
+
+            <div class="secure-note">
+                🔒 Your information is securely protected.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<style>
+
+/* ================================
+   MODERN LOGIN PAGE
+================================ */
+
+.auth-page {
+    min-height: calc(100vh - 80px);
+    padding: 70px 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(124, 92, 255, 0.12), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(255, 190, 120, 0.14), transparent 30%),
+        #f8f9ff;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 470px;
+    gap: 70px;
+    align-items: center;
+}
+
+
+/* LEFT CONTENT */
+
+.auth-info {
+    padding: 20px 10px;
+}
+
+.auth-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 25px;
+    font-weight: 800;
+    color: #202033;
+    margin-bottom: 55px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #7657ff, #9b7cff);
+    color: white;
+    box-shadow: 0 10px 25px rgba(118, 87, 255, 0.25);
+}
+
+.brand-highlight {
+    color: #7355ff;
+}
+
+.auth-label {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #7657ff;
+}
+
+.auth-info h1 {
+    font-size: clamp(40px, 5vw, 62px);
+    line-height: 1.08;
+    margin: 18px 0 22px;
+    color: #202033;
+    letter-spacing: -2px;
+}
+
+.auth-info h1 span {
+    display: block;
+    background: linear-gradient(90deg, #7657ff, #a27cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-info-content > p {
+    max-width: 520px;
+    color: #6d6d82;
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+
+
+/* BENEFITS */
+
+.auth-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.benefit-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ece8ff;
+    color: #7255ff;
+    font-weight: bold;
+}
+
+.benefit-item strong {
+    display: block;
+    color: #303047;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.benefit-item small {
+    color: #85859a;
+    font-size: 12px;
+}
+
+
+/* LOGIN CARD */
+
+.auth-card-modern {
+    background: rgba(255,255,255,0.94);
+    border: 1px solid rgba(120, 100, 255, 0.10);
+    border-radius: 28px;
+    padding: 42px;
+    box-shadow:
+        0 25px 70px rgba(40, 35, 80, 0.12),
+        0 5px 20px rgba(40, 35, 80, 0.05);
+    backdrop-filter: blur(15px);
+}
+
+.auth-card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-circle-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 18px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    background: linear-gradient(135deg, #eeeaff, #f7f2ff);
+}
+
+.auth-card-header h2 {
+    font-size: 28px;
+    margin: 0 0 8px;
+    color: #25253a;
+}
+
+.auth-card-header p {
+    margin: 0;
+    color: #85859a;
+    font-size: 14px;
+}
+
+
+/* FORM */
+
+.modern-form-group {
+    margin-bottom: 21px;
+}
+
+.modern-form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #38384c;
+    margin-bottom: 9px;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-link {
+    color: #7557ff;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.65;
+}
+
+.modern-input {
+    width: 100%;
+    height: 54px;
+    border: 1px solid #e5e5ef;
+    border-radius: 14px;
+    background: #fafaff;
+    padding: 0 45px;
+    font-size: 14px;
+    color: #303047;
+    outline: none;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+.modern-input::placeholder {
+    color: #aaaabc;
+}
+
+.modern-input:focus {
+    background: white;
+    border-color: #8266ff;
+    box-shadow: 0 0 0 4px rgba(130, 102, 255, 0.10);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.6;
+}
+
+
+/* REMEMBER */
+
+.remember-row {
+    margin: 5px 0 22px;
+}
+
+.remember-label {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #77778b !important;
+    cursor: pointer;
+}
+
+.remember-label input {
+    accent-color: #7657ff;
+    width: 15px;
+    height: 15px;
+}
+
+
+/* BUTTON */
+
+.modern-submit {
+    width: 100%;
+    height: 55px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #7657ff, #9478ff);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    box-shadow: 0 12px 25px rgba(118, 87, 255, 0.25);
+    transition: all 0.25s ease;
+}
+
+.modern-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(118, 87, 255, 0.32);
+}
+
+.submit-arrow {
+    font-size: 19px;
+}
+
+
+/* DIVIDER */
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 20px;
+    color: #aaaabd;
+    font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #ececf3;
+}
+
+
+/* REGISTER */
+
+.auth-bottom {
+    text-align: center;
+}
+
+.auth-bottom p {
+    margin: 0 0 12px;
+    color: #85859a;
+    font-size: 13px;
+}
+
+.create-account-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    border: 1px solid #ddd8ff;
+    border-radius: 13px;
+    color: #7053f4;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    background: #faf9ff;
+    transition: all 0.25s ease;
+}
+
+.create-account-btn:hover {
+    background: #f1edff;
+    border-color: #cfc5ff;
+}
+
+.secure-note {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 11px;
+    color: #aaaabd;
+}
+
+
+/* ALERT */
+
+.auth-alert {
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.auth-alert-danger,
+.auth-alert-error {
+    background: #fff0f0;
+    color: #d64b4b;
+}
+
+.auth-alert-success {
+    background: #edfff5;
+    color: #27865b;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+    .auth-container {
+        grid-template-columns: 1fr;
+        max-width: 550px;
+    }
+
+    .auth-info {
+        text-align: center;
+    }
+
+    .auth-brand {
+        margin-bottom: 35px;
+    }
+
+    .auth-info h1 {
+        font-size: 42px;
+    }
+
+    .auth-info-content > p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .benefit-item {
+        text-align: left;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .auth-page {
+        padding: 35px 15px;
+    }
+
+    .auth-card-modern {
+        padding: 28px 22px;
+        border-radius: 22px;
+    }
+
+    .auth-info h1 {
+        font-size: 34px;
+    }
+
+    .auth-info-content > p {
+        font-size: 14px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

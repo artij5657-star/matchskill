@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}SkillMatch{% endblock %}</title>
+
+    <!-- SkillMatch CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="container navbar-container">
+
+            <!-- Logo -->
+            <a href="{{ url_for('index') }}" class="logo">
+                Skill<span>Match</span>
+            </a>
+
+            <!-- Navigation -->
+            <div class="nav-links">
+
+                <a href="{{ url_for('index') }}">
+                    Home
+                </a>
+
+                <a href="{{ url_for('index') }}#features">
+                    Features
+                </a>
+
+                <a href="{{ url_for('index') }}#how-it-works">
+                    How It Works
+                </a>
+
+                <a href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+                <a href="{{ url_for('register') }}">
+                    Register
+                </a>
+
+            </div>
+
+            <!-- Mobile menu button -->
+            <button class="menu-toggle" type="button">
+                ☰
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= FLASH MESSAGES ================= -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="flash flash-{{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- ================= PAGE CONTENT ================= -->
+
+    <main>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container footer-content">
+
+            <div>
+
+                <a href="{{ url_for('index') }}" class="logo">
+                    Skill<span>Match</span>
+                </a>
+
+                <p>
+                    Smart matching for students,
+                    professionals and project teams.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <p>
+                    <a href="{{ url_for('index') }}">
+                        Home
+                    </a>
+                    &nbsp; | &nbsp;
+
+                    <a href="{{ url_for('index') }}#features">
+                        Features
+                    </a>
+                    &nbsp; | &nbsp;
+
+                    <a href="{{ url_for('index') }}#how-it-works">
+                        How It Works
+                    </a>
+                    &nbsp; | &nbsp;
+
+                    <a href="{{ url_for('login') }}">
+                        Login
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="container text-center" style="margin-top:25px;">
+
+            <p>
+                © 2026 SkillMatch. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

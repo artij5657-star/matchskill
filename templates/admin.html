@@ -1,0 +1,1442 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - SkillMatch{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <!-- Header -->
+    <div class="admin-header">
+
+        <div>
+            <span class="admin-badge">⚙️ ADMIN PANEL</span>
+
+            <h1>Admin Dashboard</h1>
+
+            <p>
+                Manage users, opportunities and applications
+                from one place.
+            </p>
+        </div>
+
+        <div class="admin-profile">
+            <div class="admin-avatar">
+                {{ user.name[0]|upper if user and user.name else 'A' }}
+            </div>
+
+            <div>
+                <strong>{{ user.name if user else 'Administrator' }}</strong>
+                <span>Administrator</span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon purple">👥</div>
+
+            <div>
+                <span>Total Users</span>
+                <strong>{{ users|length }}</strong>
+            </div>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon blue">💼</div>
+
+            <div>
+                <span>Opportunities</span>
+                <strong>{{ opportunities|length }}</strong>
+            </div>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon green">📄</div>
+
+            <div>
+                <span>Applications</span>
+                <strong>{{ applications|length }}</strong>
+            </div>
+        </div>
+
+
+        <div class="stat-card">
+            <div class="stat-icon yellow">🚀</div>
+
+            <div>
+                <span>Projects</span>
+
+                <strong>
+                    {{
+                        opportunities
+                        |selectattr('type', 'equalto', 'project')
+                        |list
+                        |length
+                    }}
+                </strong>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Add Opportunity -->
+    <section class="admin-card">
+
+        <div class="card-heading">
+
+            <div>
+                <span class="heading-icon">➕</span>
+
+                <div>
+                    <h2>Add New Opportunity</h2>
+
+                    <p>
+                        Create a new job or project for students.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <form
+            action="{{ url_for('admin_opportunity') }}"
+            method="POST"
+            class="opportunity-form"
+        >
+
+            <div class="form-grid">
+
+                <!-- Title -->
+                <div class="form-group full">
+
+                    <label for="title">
+                        Opportunity Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="e.g. Python Developer Intern"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Type -->
+                <div class="form-group">
+
+                    <label for="type">
+                        Opportunity Type
+                    </label>
+
+                    <select id="type" name="type" required>
+
+                        <option value="">
+                            Select type
+                        </option>
+
+                        <option value="job">
+                            💼 Job
+                        </option>
+
+                        <option value="project">
+                            🚀 Project
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Company -->
+                <div class="form-group">
+
+                    <label for="company">
+                        Company / Organization
+                    </label>
+
+                    <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        placeholder="Company name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Location -->
+                <div class="form-group">
+
+                    <label for="location">
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        placeholder="e.g. Pune / Remote"
+                    >
+
+                </div>
+
+
+                <!-- Deadline -->
+                <div class="form-group">
+
+                    <label for="deadline">
+                        Application Deadline
+                    </label>
+
+                    <input
+                        type="date"
+                        id="deadline"
+                        name="deadline"
+                    >
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="form-group full">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="5"
+                        placeholder="Describe the opportunity..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Skills -->
+                <div class="form-group">
+
+                    <label for="skills">
+                        Required Skills
+                    </label>
+
+                    <input
+                        type="text"
+                        id="skills"
+                        name="skills"
+                        placeholder="Python, SQL, Machine Learning"
+                    >
+
+                    <small>
+                        Separate skills with commas.
+                    </small>
+
+                </div>
+
+
+                <!-- Interests -->
+                <div class="form-group">
+
+                    <label for="interests">
+                        Preferred Interests
+                    </label>
+
+                    <input
+                        type="text"
+                        id="interests"
+                        name="interests"
+                        placeholder="AI, Web Development, Data Science"
+                    >
+
+                    <small>
+                        Separate interests with commas.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="reset"
+                    class="btn-reset"
+                >
+                    Clear
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-add"
+                >
+                    ➕ Add Opportunity
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- Opportunities -->
+    <section class="admin-card">
+
+        <div class="section-header">
+
+            <div>
+                <h2>📋 Opportunities</h2>
+
+                <p>
+                    Manage available jobs and projects.
+                </p>
+            </div>
+
+            <span class="count-badge">
+                {{ opportunities|length }}
+            </span>
+
+        </div>
+
+
+        {% if opportunities %}
+
+        <div class="table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Opportunity</th>
+                        <th>Type</th>
+                        <th>Organization</th>
+                        <th>Location</th>
+                        <th>Deadline</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for opportunity in opportunities %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="opportunity-cell">
+
+                                <div class="mini-icon">
+                                    {% if opportunity.type == 'job' %}
+                                        💼
+                                    {% else %}
+                                        🚀
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        {{ opportunity.title }}
+                                    </strong>
+
+                                    <small>
+                                        ID #{{ opportunity.id }}
+                                    </small>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if opportunity.type == 'job' %}
+
+                                <span class="type-badge job">
+                                    Job
+                                </span>
+
+                            {% else %}
+
+                                <span class="type-badge project">
+                                    Project
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+                            {{ opportunity.company or '—' }}
+                        </td>
+
+
+                        <td>
+                            {{ opportunity.location or 'Remote' }}
+                        </td>
+
+
+                        <td>
+                            {{ opportunity.deadline or '—' }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                📭
+            </div>
+
+            <h3>No Opportunities Yet</h3>
+
+            <p>
+                Add your first job or project using the form above.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- Users -->
+    <section class="admin-card">
+
+        <div class="section-header">
+
+            <div>
+                <h2>👥 Registered Users</h2>
+
+                <p>
+                    Students registered on SkillMatch.
+                </p>
+            </div>
+
+            <span class="count-badge">
+                {{ users|length }}
+            </span>
+
+        </div>
+
+
+        {% if users %}
+
+        <div class="table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Resume</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for student in users %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="user-avatar">
+                                    {{ student.name[0]|upper if student.name else 'U' }}
+                                </div>
+
+                                <strong>
+                                    {{ student.name }}
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            {{ student.email }}
+                        </td>
+
+
+                        <td>
+
+                            {% if student.role == 'admin' %}
+
+                                <span class="role-badge admin">
+                                    Admin
+                                </span>
+
+                            {% else %}
+
+                                <span class="role-badge student">
+                                    Student
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if student.resume_filename %}
+
+                                <span class="resume-status uploaded">
+                                    ✓ Uploaded
+                                </span>
+
+                            {% else %}
+
+                                <span class="resume-status missing">
+                                    Not uploaded
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <div class="empty-icon">👤</div>
+            <h3>No Users Found</h3>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- Applications -->
+    <section class="admin-card">
+
+        <div class="section-header">
+
+            <div>
+                <h2>📨 Applications</h2>
+
+                <p>
+                    Recent student applications.
+                </p>
+            </div>
+
+            <span class="count-badge">
+                {{ applications|length }}
+            </span>
+
+        </div>
+
+
+        {% if applications %}
+
+        <div class="table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Student</th>
+                        <th>Opportunity</th>
+                        <th>Status</th>
+                        <th>Applied On</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for application in applications %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ application.user_name or application.name or 'Student' }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            {{ application.opportunity_title or application.title or 'Opportunity' }}
+                        </td>
+
+
+                        <td>
+
+                            <span class="application-status">
+                                {{ application.status|default('Applied')|capitalize }}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            {{ application.created_at or '—' }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                📨
+            </div>
+
+            <h3>No Applications Yet</h3>
+
+            <p>
+                Applications will appear here when students apply.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+</div>
+
+
+<style>
+
+/* ================================
+   ADMIN PAGE
+================================ */
+
+.admin-page {
+    max-width: 1250px;
+    margin: auto;
+    padding: 35px 20px 70px;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+
+    padding: 35px;
+
+    margin-bottom: 30px;
+
+    border-radius: 25px;
+
+    background: linear-gradient(
+        135deg,
+        #f5f3ff,
+        #eef2ff,
+        #ffffff
+    );
+
+    border: 1px solid #e8e7ff;
+}
+
+.admin-badge {
+    display: inline-block;
+
+    padding: 7px 13px;
+
+    border-radius: 20px;
+
+    background: #ede9fe;
+    color: #6d28d9;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: .5px;
+}
+
+.admin-header h1 {
+    margin: 12px 0 7px;
+
+    font-size: 35px;
+
+    color: #111827;
+}
+
+.admin-header p {
+    margin: 0;
+
+    color: #6b7280;
+}
+
+
+/* Admin Profile */
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    background: white;
+
+    padding: 12px 16px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.admin-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    color: white;
+
+    font-weight: 800;
+}
+
+.admin-profile strong,
+.admin-profile span {
+    display: block;
+}
+
+.admin-profile span {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 3px;
+}
+
+
+/* ================================
+   FLASH
+================================ */
+
+.flash-container {
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    margin-bottom: 10px;
+
+    font-weight: 600;
+}
+
+.flash-message.success {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.flash-message.error,
+.flash-message.danger {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.flash-message.warning {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+
+/* ================================
+   STATISTICS
+================================ */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: white;
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    border: 1px solid #eef0f5;
+
+    box-shadow: 0 7px 22px rgba(0,0,0,.04);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.stat-icon.purple {
+    background: #ede9fe;
+}
+
+.stat-icon.blue {
+    background: #dbeafe;
+}
+
+.stat-icon.green {
+    background: #dcfce7;
+}
+
+.stat-icon.yellow {
+    background: #fef3c7;
+}
+
+.stat-card span {
+    display: block;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+}
+
+.stat-card strong {
+    display: block;
+
+    color: #111827;
+
+    font-size: 25px;
+
+    margin-top: 3px;
+}
+
+
+/* ================================
+   CARDS
+================================ */
+
+.admin-card {
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 28px;
+
+    margin-bottom: 25px;
+
+    border: 1px solid #eef0f5;
+
+    box-shadow: 0 7px 25px rgba(0,0,0,.04);
+}
+
+
+/* ================================
+   CARD HEADING
+================================ */
+
+.card-heading > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 25px;
+}
+
+.heading-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eef2ff;
+
+    font-size: 19px;
+}
+
+.card-heading h2 {
+    margin: 0;
+
+    font-size: 20px;
+}
+
+.card-heading p,
+.section-header p {
+    margin: 5px 0 0;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   FORM
+================================ */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border-radius: 11px;
+
+    border: 1px solid #e5e7eb;
+
+    background: #fafafa;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: .2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: #6366f1;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(99,102,241,.08);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group small {
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+
+/* ================================
+   FORM BUTTONS
+================================ */
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-reset,
+.btn-add {
+
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+    font-family: inherit;
+}
+
+.btn-reset {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.btn-add {
+
+    color: white;
+
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    box-shadow:
+        0 8px 20px rgba(99,102,241,.2);
+}
+
+.btn-add:hover {
+    transform: translateY(-1px);
+}
+
+
+/* ================================
+   SECTION HEADER
+================================ */
+
+.section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+.section-header h2 {
+    margin: 0;
+
+    font-size: 20px;
+}
+
+.count-badge {
+    padding: 7px 12px;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+
+/* ================================
+   TABLE
+================================ */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+.admin-table th {
+
+    text-align: left;
+
+    padding: 13px 12px;
+
+    background: #f9fafb;
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .4px;
+}
+
+.admin-table td {
+
+    padding: 16px 12px;
+
+    border-bottom: 1px solid #f0f0f0;
+
+    color: #4b5563;
+
+    font-size: 13px;
+}
+
+.admin-table tbody tr:hover {
+    background: #fafaff;
+}
+
+.admin-table strong {
+    color: #111827;
+}
+
+
+/* Opportunity Cell */
+
+.opportunity-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+.mini-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #f3f4f6;
+}
+
+.opportunity-cell strong,
+.opportunity-cell small {
+    display: block;
+}
+
+.opportunity-cell small {
+    color: #9ca3af;
+
+    margin-top: 3px;
+
+    font-size: 10px;
+}
+
+
+/* ================================
+   BADGES
+================================ */
+
+.type-badge,
+.role-badge,
+.resume-status,
+.application-status {
+
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.type-badge.job {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.type-badge.project {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.role-badge.admin {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.role-badge.student {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.resume-status.uploaded {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.resume-status.missing {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.application-status {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+
+/* ================================
+   USER CELL
+================================ */
+
+.user-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #ede9fe;
+
+    color: #6d28d9;
+
+    font-weight: 800;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   EMPTY STATE
+================================ */
+
+.empty-state {
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #6b7280;
+}
+
+.empty-icon {
+    font-size: 40px;
+
+    margin-bottom: 10px;
+}
+
+.empty-state h3 {
+    margin: 0 0 7px;
+
+    color: #374151;
+}
+
+.empty-state p {
+    margin: 0;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 950px) {
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .admin-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .admin-profile {
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .admin-page {
+        padding: 20px 14px 50px;
+    }
+
+    .admin-header {
+        padding: 25px 20px;
+    }
+
+    .admin-header h1 {
+        font-size: 28px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-card {
+        padding: 20px 16px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-reset,
+    .btn-add {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}

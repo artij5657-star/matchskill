@@ -1,0 +1,708 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | SkillMatch</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <span>Skill</span>Match
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('index') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('profile') }}" class="active">
+                Profile
+            </a>
+
+            <a href="{{ url_for('resume') }}">
+                Resume
+            </a>
+
+            <a href="{{ url_for('matches') }}">
+                Matches
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= PROFILE PAGE ================= -->
+
+    <main class="profile-page">
+
+        <div class="page-header">
+
+            <div>
+
+                <span class="section-label">
+                    MY ACCOUNT
+                </span>
+
+                <h1>
+                    My <span>Profile</span>
+                </h1>
+
+                <p>
+                    Manage your personal information, skills and interests.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <div class="profile-layout">
+
+
+            <!-- ================= PROFILE CARD ================= -->
+
+            <div class="profile-card">
+
+                <div class="profile-avatar">
+
+                    {% if user.name %}
+                        {{ user.name[0]|upper }}
+                    {% else %}
+                        U
+                    {% endif %}
+
+                </div>
+
+
+                <h2>
+                    {{ user.name }}
+                </h2>
+
+                <p class="profile-email">
+                    {{ user.email }}
+                </p>
+
+
+                <div class="profile-status">
+                    <span class="status-dot"></span>
+                    Profile Active
+                </div>
+
+
+                <div class="profile-stats">
+
+                    <div class="stat">
+
+                        <strong>
+                            {{ user.skills|length if user.skills else 0 }}
+                        </strong>
+
+                        <span>
+                            Skills
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <strong>
+                            {{ user.interests|length if user.interests else 0 }}
+                        </strong>
+
+                        <span>
+                            Interests
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <strong>
+                            {% if user.resume_filename %}
+                                ✓
+                            {% else %}
+                                —
+                            {% endif %}
+                        </strong>
+
+                        <span>
+                            Resume
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-menu">
+
+                    <a href="#personal-info">
+                        👤 Personal Information
+                    </a>
+
+                    <a href="#skills">
+                        💡 Skills
+                    </a>
+
+                    <a href="#interests">
+                        🎯 Interests
+                    </a>
+
+                    <a href="#about">
+                        📝 About Me
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= EDIT PROFILE ================= -->
+
+            <div class="profile-form-card">
+
+                <div class="card-title">
+
+                    <div>
+
+                        <span class="section-label">
+                            PROFILE SETTINGS
+                        </span>
+
+                        <h2>
+                            Edit Profile
+                        </h2>
+
+                    </div>
+
+                    <div class="edit-icon">
+                        ✏️
+                    </div>
+
+                </div>
+
+
+                <form
+                    action="{{ url_for('profile') }}"
+                    method="POST"
+                    class="profile-form"
+                >
+
+
+                    <!-- ================= PERSONAL INFO ================= -->
+
+                    <section id="personal-info">
+
+                        <h3>
+                            Personal Information
+                        </h3>
+
+                        <div class="form-grid">
+
+
+                            <!-- NAME -->
+
+                            <div class="form-group">
+
+                                <label for="name">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value="{{ user.name or '' }}"
+                                    placeholder="Enter your full name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- EMAIL -->
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value="{{ user.email or '' }}"
+                                    disabled
+                                >
+
+                                <small>
+                                    Email cannot be changed.
+                                </small>
+
+                            </div>
+
+
+                            <!-- EDUCATION -->
+
+                            <div class="form-group">
+
+                                <label for="education">
+                                    Education
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="education"
+                                    name="education"
+                                    value="{{ user.education or '' }}"
+                                    placeholder="e.g. B.Tech Computer Science"
+                                >
+
+                            </div>
+
+
+                            <!-- COLLEGE -->
+
+                            <div class="form-group">
+
+                                <label for="college">
+                                    College / University
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="college"
+                                    name="college"
+                                    value="{{ user.college or '' }}"
+                                    placeholder="Enter your college"
+                                >
+
+                            </div>
+
+
+                            <!-- LOCATION -->
+
+                            <div class="form-group">
+
+                                <label for="location">
+                                    Location
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="location"
+                                    name="location"
+                                    value="{{ user.location or '' }}"
+                                    placeholder="City, State"
+                                >
+
+                            </div>
+
+
+                            <!-- PHONE -->
+
+                            <div class="form-group">
+
+                                <label for="phone">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    value="{{ user.phone or '' }}"
+                                    placeholder="Enter phone number"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ================= SKILLS ================= -->
+
+                    <section id="skills">
+
+                        <h3>
+                            Technical Skills
+                        </h3>
+
+                        <p class="section-description">
+                            Add the technologies and skills you are comfortable with.
+                        </p>
+
+                        <div class="form-group">
+
+                            <label for="skills_input">
+                                Skills
+                            </label>
+
+                            <input
+                                type="text"
+                                id="skills_input"
+                                name="skills"
+                                value="{{ user.skills_text or '' }}"
+                                placeholder="C++, Python, Java, SQL, HTML, CSS"
+                            >
+
+                            <small>
+                                Separate multiple skills with commas.
+                            </small>
+
+                        </div>
+
+
+                        <div class="suggested-skills">
+
+                            <span>Popular:</span>
+
+                            <button type="button"
+                                    onclick="addSkill('C++')">
+                                C++
+                            </button>
+
+                            <button type="button"
+                                    onclick="addSkill('Python')">
+                                Python
+                            </button>
+
+                            <button type="button"
+                                    onclick="addSkill('Java')">
+                                Java
+                            </button>
+
+                            <button type="button"
+                                    onclick="addSkill('SQL')">
+                                SQL
+                            </button>
+
+                            <button type="button"
+                                    onclick="addSkill('HTML')">
+                                HTML
+                            </button>
+
+                            <button type="button"
+                                    onclick="addSkill('CSS')">
+                                CSS
+                            </button>
+
+                            <button type="button"
+                                    onclick="addSkill('JavaScript')">
+                                JavaScript
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ================= INTERESTS ================= -->
+
+                    <section id="interests">
+
+                        <h3>
+                            Interests
+                        </h3>
+
+                        <p class="section-description">
+                            Tell us what areas you are interested in.
+                        </p>
+
+                        <div class="form-group">
+
+                            <label for="interests_input">
+                                Career / Project Interests
+                            </label>
+
+                            <input
+                                type="text"
+                                id="interests_input"
+                                name="interests"
+                                value="{{ user.interests_text or '' }}"
+                                placeholder="Web Development, AI, Data Science"
+                            >
+
+                            <small>
+                                Separate multiple interests with commas.
+                            </small>
+
+                        </div>
+
+
+                        <div class="interest-chips">
+
+                            <button type="button"
+                                    onclick="addInterest('Web Development')">
+                                🌐 Web Development
+                            </button>
+
+                            <button type="button"
+                                    onclick="addInterest('Artificial Intelligence')">
+                                🤖 Artificial Intelligence
+                            </button>
+
+                            <button type="button"
+                                    onclick="addInterest('Data Science')">
+                                📊 Data Science
+                            </button>
+
+                            <button type="button"
+                                    onclick="addInterest('Cyber Security')">
+                                🔐 Cyber Security
+                            </button>
+
+                            <button type="button"
+                                    onclick="addInterest('Mobile Development')">
+                                📱 Mobile Development
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ================= ABOUT ================= -->
+
+                    <section id="about">
+
+                        <h3>
+                            About Me
+                        </h3>
+
+                        <div class="form-group">
+
+                            <label for="bio">
+                                Short Bio
+                            </label>
+
+                            <textarea
+                                id="bio"
+                                name="bio"
+                                rows="5"
+                                maxlength="500"
+                                placeholder="Tell us about yourself, your goals and your experience..."
+                            >{{ user.bio or '' }}</textarea>
+
+                            <small>
+                                Maximum 500 characters.
+                            </small>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ================= SOCIAL LINKS ================= -->
+
+                    <section>
+
+                        <h3>
+                            Social Profiles
+                        </h3>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="github">
+                                    GitHub Profile
+                                </label>
+
+                                <input
+                                    type="url"
+                                    id="github"
+                                    name="github"
+                                    value="{{ user.github or '' }}"
+                                    placeholder="https://github.com/username"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="linkedin">
+                                    LinkedIn Profile
+                                </label>
+
+                                <input
+                                    type="url"
+                                    id="linkedin"
+                                    name="linkedin"
+                                    value="{{ user.linkedin or '' }}"
+                                    placeholder="https://linkedin.com/in/username"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ================= SAVE BUTTON ================= -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-btn"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-btn"
+                        >
+                            Save Profile →
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 SkillMatch. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        function addSkill(skill) {
+
+            const input =
+                document.getElementById("skills_input");
+
+            let current =
+                input.value.trim();
+
+            let skills =
+                current
+                    ? current.split(",").map(s => s.trim())
+                    : [];
+
+            if (!skills.includes(skill)) {
+                skills.push(skill);
+            }
+
+            input.value =
+                skills.join(", ");
+
+        }
+
+
+        function addInterest(interest) {
+
+            const input =
+                document.getElementById("interests_input");
+
+            let current =
+                input.value.trim();
+
+            let interests =
+                current
+                    ? current.split(",").map(i => i.trim())
+                    : [];
+
+            if (!interests.includes(interest)) {
+                interests.push(interest);
+            }
+
+            input.value =
+                interests.join(", ");
+
+        }
+
+
+        // Character counter for bio
+
+        const bio =
+            document.getElementById("bio");
+
+        if (bio) {
+
+            bio.addEventListener("input", function() {
+
+                if (this.value.length > 500) {
+
+                    this.value =
+                        this.value.substring(0, 500);
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+```

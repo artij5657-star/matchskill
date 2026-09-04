@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | SkillMatch</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+   
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <span>Skill</span>Match
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('index') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('dashboard') }}" class="active">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                Profile
+            </a>
+
+            <a href="{{ url_for('resume') }}">
+                Resume
+            </a>
+
+            <a href="{{ url_for('matches') }}">
+                Matches
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN DASHBOARD ================= -->
+
+    <main class="dashboard-page">
+
+        <!-- ================= WELCOME ================= -->
+
+        <section class="dashboard-welcome">
+
+            <div>
+
+                <span class="section-label">
+                    STUDENT DASHBOARD
+                </span>
+
+                <h1>
+                    Welcome back,
+                    <span>{{ user.name }}</span> 👋
+                </h1>
+
+                <p>
+                    Discover opportunities that match your
+                    skills, interests and career goals.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-date">
+
+                <span>
+                    Your SkillMatch Profile
+                </span>
+
+                <strong>
+                    {% if user.resume_filename %}
+                        Resume Analyzed ✓
+                    {% else %}
+                        Complete Your Profile
+                    {% endif %}
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= QUICK STATS ================= -->
+
+        <section class="dashboard-stats">
+
+
+            <!-- Resume Score -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    📄
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Resume Score
+                    </span>
+
+                    <h2>
+                        {{ user.resume_score or 0 }}%
+                    </h2>
+
+                    {% if user.resume_score and user.resume_score >= 80 %}
+
+                        <small class="positive">
+                            Excellent
+                        </small>
+
+                    {% elif user.resume_score and user.resume_score >= 60 %}
+
+                        <small class="positive">
+                            Good
+                        </small>
+
+                    {% else %}
+
+                        <small>
+                            Upload resume
+                        </small>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Skills -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon yellow">
+                    💡
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Skills
+                    </span>
+
+                    <h2>
+                        {{ user.skills|length if user.skills else 0 }}
+                    </h2>
+
+                    <small>
+                        Skills detected
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- Matches -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    🎯
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Matches
+                    </span>
+
+                    <h2>
+                        {{ matches|length if matches else 0 }}
+                    </h2>
+
+                    <small>
+                        Opportunities
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- Applications -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    🚀
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Applications
+                    </span>
+
+                    <h2>
+                        {{ applications|length if applications else 0 }}
+                    </h2>
+
+                    <small>
+                        Submitted
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MAIN GRID ================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- ================= RECOMMENDED ================= -->
+
+            <div class="dashboard-main">
+
+                <div class="dashboard-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <span class="section-label">
+                                AI RECOMMENDATIONS
+                            </span>
+
+                            <h2>
+                                Recommended Opportunities
+                            </h2>
+
+                        </div>
+
+                        <a href="{{ url_for('matches') }}"
+                           class="view-all">
+                            View All →
+                        </a>
+
+                    </div>
+
+
+                    {% if matches %}
+
+                        <div class="opportunity-list">
+
+                            {% for opportunity in matches[:5] %}
+
+                                <div class="opportunity-card">
+
+                                    <!-- Opportunity Icon -->
+
+                                    <div class="opportunity-icon">
+
+                                        {% if opportunity.type == 'job' %}
+                                            💼
+                                        {% elif opportunity.type == 'project' %}
+                                            🚀
+                                        {% else %}
+                                            ⭐
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- Opportunity Info -->
+
+                                    <div class="opportunity-info">
+
+                                        <div class="opportunity-top">
+
+                                            <span class="opportunity-type">
+                                                {{ opportunity.type|upper }}
+                                            </span>
+
+                                            {% if opportunity.score %}
+                                                <span class="match-badge">
+                                                    {{ opportunity.score }}% Match
+                                                </span>
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <h3>
+                                            <a href="{{ url_for(
+                                                'opportunity',
+                                                id=opportunity.id
+                                            ) }}">
+                                                {{ opportunity.title }}
+                                            </a>
+                                        </h3>
+
+
+                                        <p>
+                                            {{ opportunity.description[:130] }}
+                                            {% if opportunity.description|length > 130 %}
+                                                ...
+                                            {% endif %}
+                                        </p>
+
+
+                                        <div class="opportunity-meta">
+
+                                            {% if opportunity.location %}
+                                                <span>
+                                                    📍 {{ opportunity.location }}
+                                                </span>
+                                            {% endif %}
+
+                                            {% if opportunity.company %}
+                                                <span>
+                                                    🏢 {{ opportunity.company }}
+                                                </span>
+                                            {% endif %}
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Arrow -->
+
+                                    <a
+                                        href="{{ url_for(
+                                            'opportunity',
+                                            id=opportunity.id
+                                        ) }}"
+                                        class="opportunity-arrow"
+                                    >
+                                        →
+                                    </a>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+                                🎯
+                            </div>
+
+                            <h3>
+                                No recommendations yet
+                            </h3>
+
+                            <p>
+                                Complete your profile and upload your
+                                resume to get personalized opportunities.
+                            </p>
+
+                            <a
+                                href="{{ url_for('profile') }}"
+                                class="primary-btn"
+                            >
+                                Complete Profile →
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RIGHT SIDEBAR ================= -->
+
+            <aside class="dashboard-sidebar">
+
+
+                <!-- Profile Completion -->
+
+                <div class="dashboard-card completion-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <span class="section-label">
+                                PROFILE
+                            </span>
+
+                            <h2>
+                                Profile Completion
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    {% set completion = 0 %}
+
+                    {% if user.name %}
+                        {% set completion = completion + 20 %}
+                    {% endif %}
+
+                    {% if user.education %}
+                        {% set completion = completion + 20 %}
+                    {% endif %}
+
+                    {% if user.skills %}
+                        {% set completion = completion + 20 %}
+                    {% endif %}
+
+                    {% if user.interests %}
+                        {% set completion = completion + 20 %}
+                    {% endif %}
+
+                    {% if user.resume_filename %}
+                        {% set completion = completion + 20 %}
+                    {% endif %}
+
+
+                    <div class="completion-score">
+
+                        <strong>
+                            {{ completion }}%
+                        </strong>
+
+                        <span>
+                            Complete
+                        </span>
+
+                    </div>
+
+
+                    <div class="completion-bar">
+
+                     >
+                     <div
+                    class="completion-progress"
+                       data-completion="{{ completion }}"
+                     ></div>
+
+
+                    {% if completion < 100 %}
+
+                        <p>
+                            Complete your profile to improve
+                            your matching results.
+                        </p>
+
+                        <a
+                            href="{{ url_for('profile') }}"
+                            class="secondary-btn"
+                        >
+                            Complete Profile
+                        </a>
+
+                    {% else %}
+
+                        <p class="positive">
+                            Your profile is complete! 🎉
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ================= QUICK ACTIONS ================= -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <span class="section-label">
+                                QUICK ACTIONS
+                            </span>
+
+                            <h2>
+                                Get Started
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+
+                        <a
+                            href="{{ url_for('resume') }}"
+                            class="quick-action"
+                        >
+
+                            <div class="quick-icon purple">
+                                📄
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Upload Resume
+                                </strong>
+
+                                <span>
+                                    Analyze your resume
+                                </span>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="{{ url_for('profile') }}"
+                            class="quick-action"
+                        >
+
+                            <div class="quick-icon yellow">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Edit Profile
+                                </strong>
+
+                                <span>
+                                    Update your information
+                                </span>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="{{ url_for('matches') }}"
+                            class="quick-action"
+                        >
+
+                            <div class="quick-icon green">
+                                🎯
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Find Matches
+                                </strong>
+
+                                <span>
+                                    Explore opportunities
+                                </span>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= AI TIP ================= -->
+
+                <div class="ai-tip">
+
+                    <div class="ai-tip-icon">
+                        ✨
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            SkillMatch Tip
+                        </strong>
+
+                        <p>
+                            Keep your skills and resume updated
+                            to get better recommendations.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+
+        <!-- ================= SKILLS SECTION ================= -->
+
+        <section class="dashboard-card skills-dashboard">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        YOUR PROFILE
+                    </span>
+
+                    <h2>
+                        Your Skills
+                    </h2>
+
+                </div>
+
+                <a
+                    href="{{ url_for('profile') }}"
+                    class="view-all"
+                >
+                    Edit Skills →
+                </a>
+
+            </div>
+
+
+            {% if user.skills %}
+
+                <div class="skill-tags">
+
+                    {% for skill in user.skills %}
+
+                        <span class="skill-tag">
+                            {{ skill }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-skills">
+
+                    <p>
+                        No skills added yet.
+                    </p>
+
+                    <a
+                        href="{{ url_for('profile') }}"
+                        class="secondary-btn"
+                    >
+                        Add Skills
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ================= INTERESTS ================= -->
+
+        <section class="dashboard-card interests-dashboard">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        CAREER INTERESTS
+                    </span>
+
+                    <h2>
+                        Your Interests
+                    </h2>
+
+                </div>
+
+                <a
+                    href="{{ url_for('profile') }}"
+                    class="view-all"
+                >
+                    Edit Interests →
+                </a>
+
+            </div>
+
+
+            {% if user.interests %}
+
+                <div class="interest-chips">
+
+                    {% for interest in user.interests %}
+
+                        <span>
+                            🎯 {{ interest }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-skills">
+
+                    <p>
+                        No interests added yet.
+                    </p>
+
+                    <a
+                        href="{{ url_for('profile') }}"
+                        class="secondary-btn"
+                    >
+                        Add Interests
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 SkillMatch. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,801 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Matches | SkillMatch</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <span>Skill</span>Match
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('index') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                Profile
+            </a>
+
+            <a href="{{ url_for('resume') }}">
+                Resume
+            </a>
+
+            <a href="{{ url_for('matches') }}" class="active">
+                Matches
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="matches-page">
+
+
+        <!-- ================= HEADER ================= -->
+
+        <section class="matches-header">
+
+            <div>
+
+                <span class="section-label">
+                    AI-POWERED MATCHING
+                </span>
+
+                <h1>
+                    Your <span>Opportunities</span>
+                </h1>
+
+                <p>
+                    Discover jobs and projects matched to your
+                    skills and interests.
+                </p>
+
+            </div>
+
+
+            <div class="match-summary">
+
+                <div class="summary-icon">
+                    🎯
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ matches|length if matches else 0 }}
+                    </strong>
+
+                    <span>
+                        Matches Found
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FLASH MESSAGES ================= -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ================= FILTER BAR ================= -->
+
+        <section class="filter-bar">
+
+            <div class="filter-title">
+
+                <strong>
+                    Find Your Match
+                </strong>
+
+                <span>
+                    Filter opportunities
+                </span>
+
+            </div>
+
+
+            <div class="filters">
+
+                <button
+                    type="button"
+                    class="filter-btn active"
+                    onclick="filterMatches('all', this)"
+                >
+                    All
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    onclick="filterMatches('job', this)"
+                >
+                    💼 Jobs
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    onclick="filterMatches('project', this)"
+                >
+                    🚀 Projects
+                </button>
+
+            </div>
+
+
+            <div class="sort-container">
+
+                <label for="sortMatches">
+                    Sort:
+                </label>
+
+                <select id="sortMatches"
+                        onchange="sortMatches()">
+
+                    <option value="score">
+                        Best Match
+                    </option>
+
+                    <option value="title">
+                        Title
+                    </option>
+
+                    <option value="newest">
+                        Newest
+                    </option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MATCHES ================= -->
+
+        <section class="matches-container">
+
+            {% if matches %}
+
+                <div class="matches-grid" id="matchesGrid">
+
+                    {% for opportunity in matches %}
+
+                        <article
+                            class="match-card"
+                            data-type="{{ opportunity.type|lower }}"
+                            data-score="{{ opportunity.score or 0 }}"
+                            data-title="{{ opportunity.title|lower }}"
+                        >
+
+
+                            <!-- ================= CARD TOP ================= -->
+
+                            <div class="match-card-top">
+
+                                <div class="opportunity-icon">
+
+                                    {% if opportunity.type|lower == 'job' %}
+                                        💼
+                                    {% elif opportunity.type|lower == 'project' %}
+                                        🚀
+                                    {% else %}
+                                        ⭐
+                                    {% endif %}
+
+                                </div>
+
+
+                                <span class="opportunity-type">
+
+                                    {{ opportunity.type|upper }}
+
+                                </span>
+
+
+                                <div class="match-score">
+
+                                    <strong>
+                                        {{ opportunity.score or 0 }}%
+                                    </strong>
+
+                                    <span>
+                                        Match
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ================= TITLE ================= -->
+
+                            <div class="match-card-content">
+
+                                <h2>
+
+                                    <a href="{{ url_for(
+                                        'opportunity',
+                                        id=opportunity.id
+                                    ) }}">
+
+                                        {{ opportunity.title }}
+
+                                    </a>
+
+                                </h2>
+
+
+                                {% if opportunity.company %}
+
+                                    <p class="company-name">
+                                        🏢 {{ opportunity.company }}
+                                    </p>
+
+                                {% endif %}
+
+
+                                <p class="match-description">
+
+                                    {{ opportunity.description }}
+
+                                </p>
+
+
+                                <!-- ================= META ================= -->
+
+                                <div class="match-meta">
+
+                                    {% if opportunity.location %}
+
+                                        <span>
+                                            📍 {{ opportunity.location }}
+                                        </span>
+
+                                    {% endif %}
+
+
+                                    {% if opportunity.deadline %}
+
+                                        <span>
+                                            📅 {{ opportunity.deadline }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- ================= SKILLS ================= -->
+
+                                {% if opportunity.skills %}
+
+                                    <div class="match-section">
+
+                                        <h4>
+                                            Skills
+                                        </h4>
+
+                                        <div class="skill-tags">
+
+                                            {% for skill in opportunity.skills[:6] %}
+
+                                                <span class="skill-tag">
+                                                    {{ skill }}
+                                                </span>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <!-- ================= INTERESTS ================= -->
+
+                                {% if opportunity.interests %}
+
+                                    <div class="match-section">
+
+                                        <h4>
+                                            Project Interests
+                                        </h4>
+
+                                        <div class="interest-chips">
+
+                                            {% for interest in opportunity.interests[:4] %}
+
+                                                <span>
+                                                    🎯 {{ interest }}
+                                                </span>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <!-- ================= MATCH REASON ================= -->
+
+                                <div class="match-reason">
+
+                                    <span class="reason-icon">
+                                        ✨
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            Why this matches you
+                                        </strong>
+
+                                        <p>
+                                            This opportunity matches
+                                            your skills and interests.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ================= CARD FOOTER ================= -->
+
+                            <div class="match-card-footer">
+
+                                <a
+                                    href="{{ url_for(
+                                        'opportunity',
+                                        id=opportunity.id
+                                    ) }}"
+                                    class="secondary-btn"
+                                >
+                                    View Details
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for(
+                                        'apply',
+                                        id=opportunity.id
+                                    ) }}"
+                                    class="primary-btn"
+                                >
+                                    Apply →
+                                </a>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- ================= NO FILTER RESULT ================= -->
+
+                <div
+                    class="empty-state"
+                    id="noFilterResults"
+                    style="display: none;"
+                >
+
+                    <div class="empty-icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        No matches found
+                    </h3>
+
+                    <p>
+                        Try selecting another opportunity type.
+                    </p>
+
+                </div>
+
+
+            {% else %}
+
+                <!-- ================= NO MATCHES ================= -->
+
+                <div class="empty-state no-matches">
+
+                    <div class="empty-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        No Matches Yet
+                    </h2>
+
+                    <p>
+                        We couldn't find any opportunities for your
+                        current profile.
+                    </p>
+
+                    <p>
+                        Add more skills and interests or upload your
+                        resume to improve your recommendations.
+                    </p>
+
+
+                    <div class="empty-actions">
+
+                        <a
+                            href="{{ url_for('profile') }}"
+                            class="secondary-btn"
+                        >
+                            Update Profile
+                        </a>
+
+                        <a
+                            href="{{ url_for('resume') }}"
+                            class="primary-btn"
+                        >
+                            Upload Resume →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ================= MATCHING EXPLANATION ================= -->
+
+        <section class="matching-info">
+
+            <div class="matching-info-content">
+
+                <div class="matching-info-icon">
+                    🤖
+                </div>
+
+                <div>
+
+                    <span class="section-label">
+                        SMART MATCHING
+                    </span>
+
+                    <h2>
+                        How is my match score calculated?
+                    </h2>
+
+                    <p>
+                        SkillMatch compares your technical skills
+                        and interests with each opportunity to
+                        calculate a personalized match percentage.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="matching-factors">
+
+                <div class="factor">
+
+                    <strong>
+                        70%
+                    </strong>
+
+                    <span>
+                        Skills
+                    </span>
+
+                </div>
+
+
+                <div class="factor">
+
+                    <strong>
+                        30%
+                    </strong>
+
+                    <span>
+                        Interests
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 SkillMatch. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        let currentFilter = "all";
+
+
+        // ================= FILTER =================
+
+        function filterMatches(type, button) {
+
+            currentFilter = type;
+
+            const cards =
+                document.querySelectorAll(".match-card");
+
+            const buttons =
+                document.querySelectorAll(".filter-btn");
+
+            buttons.forEach(function(btn) {
+
+                btn.classList.remove("active");
+
+            });
+
+            button.classList.add("active");
+
+
+            let visibleCount = 0;
+
+
+            cards.forEach(function(card) {
+
+                const cardType =
+                    card.dataset.type;
+
+                if (
+                    type === "all" ||
+                    cardType === type
+                ) {
+
+                    card.style.display = "";
+
+                    visibleCount++;
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+
+            const empty =
+                document.getElementById("noFilterResults");
+
+            if (empty) {
+
+                if (visibleCount === 0) {
+
+                    empty.style.display = "block";
+
+                } else {
+
+                    empty.style.display = "none";
+
+                }
+
+            }
+
+        }
+
+
+        // ================= SORT =================
+
+        function sortMatches() {
+
+            const sortValue =
+                document.getElementById(
+                    "sortMatches"
+                ).value;
+
+
+            const grid =
+                document.getElementById(
+                    "matchesGrid"
+                );
+
+
+            if (!grid) {
+                return;
+            }
+
+
+            const cards =
+                Array.from(
+                    grid.querySelectorAll(
+                        ".match-card"
+                    )
+                );
+
+
+            if (sortValue === "score") {
+
+                cards.sort(function(a, b) {
+
+                    return (
+                        Number(b.dataset.score) -
+                        Number(a.dataset.score)
+                    );
+
+                });
+
+            }
+
+
+            else if (sortValue === "title") {
+
+                cards.sort(function(a, b) {
+
+                    return a.dataset.title.localeCompare(
+                        b.dataset.title
+                    );
+
+                });
+
+            }
+
+
+            cards.forEach(function(card) {
+
+                grid.appendChild(card);
+
+            });
+
+
+            // Re-apply filter
+
+            filterVisibleCards();
+
+        }
+
+
+        // ================= APPLY FILTER AFTER SORT =================
+
+        function filterVisibleCards() {
+
+            const cards =
+                document.querySelectorAll(
+                    ".match-card"
+                );
+
+
+            cards.forEach(function(card) {
+
+                const cardType =
+                    card.dataset.type;
+
+
+                if (
+                    currentFilter === "all" ||
+                    cardType === currentFilter
+                ) {
+
+                    card.style.display = "";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        // ================= ANIMATION =================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const cards =
+                    document.querySelectorAll(
+                        ".match-card"
+                    );
+
+
+                cards.forEach(function(card, index) {
+
+                    card.style.opacity = "0";
+
+                    card.style.transform =
+                        "translateY(15px)";
+
+
+                    setTimeout(function() {
+
+                        card.style.transition =
+                            "all 0.4s ease";
+
+                        card.style.opacity = "1";
+
+                        card.style.transform =
+                            "translateY(0)";
+
+                    }, index * 80);
+
+                });
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
+```

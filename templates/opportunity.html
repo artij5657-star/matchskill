@@ -1,0 +1,813 @@
+{% extends "base.html" %}
+
+{% block title %}{{ opportunity.title }} - SkillMatch{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <!-- Back Button -->
+    <div class="back-section">
+        <a href="{{ url_for('matches') }}" class="back-link">
+            ← Back to Matches
+        </a>
+    </div>
+
+    <!-- Opportunity Header -->
+    <section class="opportunity-header">
+
+        <div class="opportunity-header-content">
+
+            <div class="opportunity-type">
+                {% if opportunity.type == 'job' %}
+                    💼 Job Opportunity
+                {% else %}
+                    🚀 Project Opportunity
+                {% endif %}
+            </div>
+
+            <h1>{{ opportunity.title }}</h1>
+
+            <p class="opportunity-description">
+                {{ opportunity.description }}
+            </p>
+
+            <div class="opportunity-meta">
+
+                {% if opportunity.company %}
+                <span>
+                    🏢 {{ opportunity.company }}
+                </span>
+                {% endif %}
+
+                {% if opportunity.location %}
+                <span>
+                    📍 {{ opportunity.location }}
+                </span>
+                {% endif %}
+
+                {% if opportunity.deadline %}
+                <span>
+                    📅 Deadline: {{ opportunity.deadline }}
+                </span>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- Match Score -->
+        <div class="match-score-large">
+
+            <div class="score-circle">
+                <strong>{{ opportunity.score|default(0)|round|int }}%</strong>
+                <span>Match</span>
+            </div>
+
+            <p>SkillMatch Score</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Main Content -->
+    <div class="opportunity-grid">
+
+        <!-- LEFT SIDE -->
+        <main>
+
+            <!-- About Opportunity -->
+            <section class="detail-card">
+
+                <div class="section-title">
+                    <span>📋</span>
+                    <h2>About This Opportunity</h2>
+                </div>
+
+                <p class="detail-text">
+                    {{ opportunity.description }}
+                </p>
+
+            </section>
+
+
+            <!-- Required Skills -->
+            <section class="detail-card">
+
+                <div class="section-title">
+                    <span>💻</span>
+                    <h2>Required Skills</h2>
+                </div>
+
+                <div class="tag-container">
+
+                    {% if opportunity.skills %}
+
+                        {% for skill in opportunity.skills %}
+                            <span class="skill-tag">
+                                {{ skill }}
+                            </span>
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="muted-text">
+                            No specific skills listed.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+            <!-- Interests -->
+            <section class="detail-card">
+
+                <div class="section-title">
+                    <span>❤️</span>
+                    <h2>Preferred Interests</h2>
+                </div>
+
+                <div class="tag-container">
+
+                    {% if opportunity.interests %}
+
+                        {% for interest in opportunity.interests %}
+                            <span class="interest-tag">
+                                {{ interest }}
+                            </span>
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="muted-text">
+                            No specific interests listed.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+            <!-- Why This Match -->
+            <section class="detail-card">
+
+                <div class="section-title">
+                    <span>🤖</span>
+                    <h2>Why This Is a Good Match</h2>
+                </div>
+
+                <div class="match-reasons">
+
+                    <div class="reason-item">
+                        <div class="reason-icon">✓</div>
+                        <div>
+                            <h3>Skill Compatibility</h3>
+                            <p>
+                                Your technical skills match the requirements
+                                of this opportunity.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="reason-item">
+                        <div class="reason-icon">✓</div>
+                        <div>
+                            <h3>Interest Compatibility</h3>
+                            <p>
+                                Your selected interests are relevant to this
+                                opportunity.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="reason-item">
+                        <div class="reason-icon">✓</div>
+                        <div>
+                            <h3>Personalized Recommendation</h3>
+                            <p>
+                                SkillMatch recommends this opportunity based
+                                on your profile and resume.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- RIGHT SIDE -->
+        <aside>
+
+            <!-- Apply Card -->
+            <section class="apply-card">
+
+                <div class="apply-icon">
+                    🚀
+                </div>
+
+                <h2>
+                    Interested in this opportunity?
+                </h2>
+
+                <p>
+                    Apply now and take the next step toward your career goal.
+                </p>
+
+                {% if opportunity.id %}
+
+                    <a href="{{ url_for('apply', id=opportunity.id) }}"
+                       class="btn btn-primary btn-full">
+                        Apply Now →
+                    </a>
+
+                {% endif %}
+
+                <a href="{{ url_for('matches') }}"
+                   class="btn btn-secondary btn-full">
+                    View Other Matches
+                </a>
+
+            </section>
+
+
+            <!-- Opportunity Information -->
+            <section class="info-card">
+
+                <h3>Opportunity Details</h3>
+
+                {% if opportunity.type %}
+                <div class="info-row">
+                    <span>Type</span>
+                    <strong>
+                        {{ opportunity.type|capitalize }}
+                    </strong>
+                </div>
+                {% endif %}
+
+                {% if opportunity.company %}
+                <div class="info-row">
+                    <span>Organization</span>
+                    <strong>
+                        {{ opportunity.company }}
+                    </strong>
+                </div>
+                {% endif %}
+
+                {% if opportunity.location %}
+                <div class="info-row">
+                    <span>Location</span>
+                    <strong>
+                        {{ opportunity.location }}
+                    </strong>
+                </div>
+                {% endif %}
+
+                {% if opportunity.deadline %}
+                <div class="info-row">
+                    <span>Deadline</span>
+                    <strong>
+                        {{ opportunity.deadline }}
+                    </strong>
+                </div>
+                {% endif %}
+
+            </section>
+
+
+            <!-- Match Score Breakdown -->
+            <section class="score-card">
+
+                <h3>Match Breakdown</h3>
+
+                <div class="score-item">
+
+                    <div class="score-label">
+                        <span>Skills</span>
+                        <strong>70%</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill"
+                             style="width: 70%;">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="score-item">
+
+                    <div class="score-label">
+                        <span>Interests</span>
+                        <strong>30%</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill"
+                             style="width: 30%;">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="total-score">
+                    <span>Overall Match</span>
+                    <strong>
+                        {{ opportunity.score|default(0)|round|int }}%
+                    </strong>
+                </div>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* Page */
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+/* Back */
+.back-section {
+    margin-bottom: 25px;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #6366f1;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+
+/* Header */
+.opportunity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+
+    background: linear-gradient(
+        135deg,
+        #f5f3ff,
+        #ffffff
+    );
+
+    padding: 45px;
+    border-radius: 24px;
+    margin-bottom: 30px;
+
+    box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+}
+
+.opportunity-header-content {
+    flex: 1;
+}
+
+.opportunity-type {
+    display: inline-block;
+
+    padding: 8px 14px;
+
+    background: #ede9fe;
+    color: #6d28d9;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    margin-bottom: 15px;
+}
+
+.opportunity-header h1 {
+    font-size: 38px;
+    margin: 0 0 15px;
+    color: #111827;
+}
+
+.opportunity-description {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #6b7280;
+    max-width: 750px;
+}
+
+.opportunity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 20px;
+
+    color: #4b5563;
+    font-size: 14px;
+}
+
+
+/* Match Score */
+.match-score-large {
+    text-align: center;
+    min-width: 150px;
+}
+
+.score-circle {
+    width: 130px;
+    height: 130px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 12px 30px rgba(99,102,241,0.3);
+}
+
+.score-circle strong {
+    font-size: 30px;
+}
+
+.score-circle span {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.match-score-large p {
+    color: #6b7280;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+
+/* Grid */
+.opportunity-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 25px;
+}
+
+
+/* Cards */
+.detail-card,
+.apply-card,
+.info-card,
+.score-card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 28px;
+
+    margin-bottom: 25px;
+
+    border: 1px solid #eef0f5;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+}
+
+
+/* Section title */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.section-title span {
+    font-size: 22px;
+}
+
+.section-title h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #111827;
+}
+
+.detail-text {
+    color: #6b7280;
+    line-height: 1.8;
+}
+
+
+/* Tags */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag,
+.interest-tag {
+
+    padding: 8px 13px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.skill-tag {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.interest-tag {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.muted-text {
+    color: #9ca3af;
+}
+
+
+/* Match Reasons */
+.match-reasons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.reason-item {
+    display: flex;
+    gap: 15px;
+}
+
+.reason-icon {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+    color: #16a34a;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+
+    flex-shrink: 0;
+}
+
+.reason-item h3 {
+    margin: 0 0 5px;
+    font-size: 15px;
+}
+
+.reason-item p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* Apply Card */
+.apply-card {
+    text-align: center;
+}
+
+.apply-icon {
+    width: 65px;
+    height: 65px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fef3c7;
+
+    border-radius: 18px;
+
+    font-size: 28px;
+}
+
+.apply-card h2 {
+    font-size: 20px;
+    color: #111827;
+}
+
+.apply-card p {
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+
+/* Buttons */
+.btn-full {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    margin-top: 12px;
+}
+
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    color: white;
+    padding: 13px 20px;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+    font-weight: 700;
+
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+
+    padding: 13px 20px;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+/* Information */
+.info-card h3,
+.score-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #f0f0f0;
+
+    font-size: 14px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row span {
+    color: #9ca3af;
+}
+
+.info-row strong {
+    color: #374151;
+    text-align: right;
+}
+
+
+/* Score */
+.score-item {
+    margin-bottom: 20px;
+}
+
+.score-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+
+    font-size: 14px;
+}
+
+.progress-bar {
+    height: 8px;
+
+    background: #eef0f5;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+    border-radius: 20px;
+}
+
+.total-score {
+    display: flex;
+    justify-content: space-between;
+
+    padding-top: 18px;
+
+    border-top: 1px solid #eee;
+
+    font-weight: 700;
+}
+
+.total-score strong {
+    color: #6366f1;
+}
+
+
+/* Responsive */
+@media (max-width: 850px) {
+
+    .opportunity-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .match-score-large {
+        align-self: center;
+    }
+
+    .opportunity-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .page-container {
+        padding: 20px 15px;
+    }
+
+    .opportunity-header {
+        padding: 25px;
+    }
+
+    .opportunity-header h1 {
+        font-size: 28px;
+    }
+
+    .opportunity-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .detail-card,
+    .apply-card,
+    .info-card,
+    .score-card {
+        padding: 20px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
