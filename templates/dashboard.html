@@ -3,142 +3,282 @@
 {% block content %}
 
 <style>
-    .dashboard-page {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 30px 20px 60px;
+    /* ================================
+       SKILLMATCH MODERN DASHBOARD
+    ================================= */
+
+    :root {
+        --primary: #6257e8;
+        --primary-dark: #4b3fd1;
+        --primary-light: #eeecff;
+        --text: #172033;
+        --muted: #788197;
+        --border: #e9eaf1;
+        --bg: #f7f8fc;
+        --white: #ffffff;
+        --green: #20b486;
+        --orange: #f59e0b;
+        --blue: #3b82f6;
     }
 
-    /* Hero */
+    .dashboard-page {
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at 10% 0%, #eeeaff 0, transparent 28%),
+            radial-gradient(circle at 95% 10%, #e8f4ff 0, transparent 25%),
+            var(--bg);
+        padding: 35px 25px 70px;
+    }
+
+    .dashboard-container {
+        max-width: 1250px;
+        margin: auto;
+    }
+
+    /* ================================
+       HERO
+    ================================= */
+
     .dashboard-hero {
-        background: linear-gradient(135deg, #6c63ff, #8b7cff, #a78bfa);
-        border-radius: 28px;
-        padding: 38px;
+        position: relative;
+        overflow: hidden;
+        min-height: 250px;
+        padding: 42px 45px;
+        border-radius: 30px;
+        background: linear-gradient(
+            120deg,
+            #5145cd 0%,
+            #695de9 48%,
+            #887cf5 100%
+        );
         color: white;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 25px;
-        margin-bottom: 30px;
-        box-shadow: 0 15px 40px rgba(108, 99, 255, 0.22);
+        justify-content: space-between;
+        margin-bottom: 25px;
+        box-shadow: 0 20px 50px rgba(82, 69, 205, .22);
+    }
+
+    .dashboard-hero::before {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.08);
+        right: 180px;
+        top: -160px;
+    }
+
+    .dashboard-hero::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.07);
+        right: -70px;
+        bottom: -120px;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 650px;
+    }
+
+    .welcome-small {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+        opacity: .85;
+        margin-bottom: 8px;
     }
 
     .hero-text h1 {
-        font-size: 34px;
-        margin: 0 0 10px;
+        font-size: 38px;
+        line-height: 1.15;
+        margin: 0 0 13px;
         font-weight: 800;
     }
 
     .hero-text p {
         margin: 0;
-        opacity: 0.9;
         font-size: 16px;
-        line-height: 1.6;
+        line-height: 1.7;
+        opacity: .9;
+        max-width: 560px;
     }
 
-    .hero-icon {
-        width: 100px;
-        height: 100px;
-        border-radius: 25px;
-        background: rgba(255,255,255,0.18);
+    .hero-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .hero-btn {
+        text-decoration: none;
+        padding: 12px 19px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 14px;
+        transition: .25s;
+    }
+
+    .hero-btn.primary {
+        background: white;
+        color: var(--primary-dark);
+    }
+
+    .hero-btn.secondary {
+        background: rgba(255,255,255,.14);
+        color: white;
+        border: 1px solid rgba(255,255,255,.25);
+    }
+
+    .hero-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .hero-visual {
+        position: relative;
+        z-index: 2;
+        width: 175px;
+        height: 175px;
+        border-radius: 35px;
+        background: rgba(255,255,255,.13);
+        border: 1px solid rgba(255,255,255,.18);
+        backdrop-filter: blur(12px);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 50px;
-        backdrop-filter: blur(10px);
+        font-size: 85px;
+        transform: rotate(2deg);
     }
 
-    /* Profile Card */
+    /* ================================
+       PROFILE CARD
+    ================================= */
+
     .profile-card {
-        background: white;
+        background: var(--white);
+        border: 1px solid var(--border);
         border-radius: 22px;
-        padding: 25px;
-        margin-bottom: 25px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        padding: 22px 25px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 20px;
-        border: 1px solid #eee;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 30px rgba(25,30,50,.05);
     }
 
     .profile-left {
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: 16px;
     }
 
     .profile-avatar {
-        width: 65px;
-        height: 65px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #6c63ff, #a78bfa);
+        width: 62px;
+        height: 62px;
+        flex-shrink: 0;
+        border-radius: 18px;
+        background: linear-gradient(135deg,#6257e8,#9b8cff);
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 25px;
         font-weight: 800;
+        box-shadow: 0 8px 20px rgba(98,87,232,.22);
     }
 
     .profile-info h3 {
         margin: 0 0 5px;
-        font-size: 20px;
+        font-size: 18px;
+        color: var(--text);
     }
 
     .profile-info p {
         margin: 0;
-        color: #777;
+        color: var(--muted);
+        font-size: 14px;
     }
 
     .profile-btn {
         text-decoration: none;
-        background: #f1efff;
-        color: #5b52e8;
-        padding: 12px 20px;
+        background: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 12px 19px;
         border-radius: 12px;
         font-weight: 700;
-        transition: 0.3s;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: .25s;
     }
 
     .profile-btn:hover {
-        background: #6c63ff;
+        background: var(--primary);
         color: white;
+        transform: translateY(-2px);
     }
 
-    /* Stats */
+    /* ================================
+       STAT CARDS
+    ================================= */
+
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3,1fr);
         gap: 20px;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
     }
 
     .stat-card {
-        background: white;
-        border-radius: 22px;
-        padding: 25px;
-        border: 1px solid #eee;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-        transition: 0.3s;
         position: relative;
         overflow: hidden;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 23px;
+        box-shadow: 0 8px 28px rgba(25,30,50,.045);
+        transition: .3s;
     }
 
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.09);
+        box-shadow: 0 15px 35px rgba(25,30,50,.10);
+        border-color: #ddd9ff;
+    }
+
+    .stat-card::after {
+        content: "";
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        right: -35px;
+        top: -35px;
+        background: var(--primary-light);
+        opacity: .5;
+    }
+
+    .stat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .stat-icon {
-        width: 52px;
-        height: 52px;
+        width: 50px;
+        height: 50px;
         border-radius: 15px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 25px;
-        margin-bottom: 15px;
+        font-size: 23px;
     }
 
     .resume-icon {
@@ -146,90 +286,135 @@
     }
 
     .skills-icon {
-        background: #e8f8ef;
+        background: #e5f9f0;
     }
 
     .matches-icon {
-        background: #eeeaff;
+        background: #eeebff;
+    }
+
+    .stat-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #f5f5f8;
+        color: var(--muted);
     }
 
     .stat-card h4 {
-        margin: 0;
-        color: #777;
-        font-size: 14px;
-        font-weight: 600;
+        color: var(--muted);
+        font-size: 13px;
+        margin: 18px 0 4px;
+        font-weight: 700;
     }
 
     .stat-number {
-        font-size: 32px;
-        font-weight: 800;
-        margin: 5px 0;
-        color: #222;
+        font-size: 34px;
+        font-weight: 850;
+        color: var(--text);
+        margin-bottom: 5px;
     }
 
     .stat-link {
-        color: #6c63ff;
+        color: var(--primary);
         text-decoration: none;
         font-size: 13px;
         font-weight: 700;
     }
 
-    /* Main Grid */
+    .stat-link:hover {
+        text-decoration: underline;
+    }
+
+    /* ================================
+       MAIN GRID
+    ================================= */
+
     .main-grid {
         display: grid;
         grid-template-columns: 1.4fr 1fr;
         gap: 25px;
+        margin-bottom: 25px;
     }
 
     .dashboard-card {
         background: white;
+        border: 1px solid var(--border);
         border-radius: 22px;
         padding: 27px;
-        border: 1px solid #eee;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        box-shadow: 0 8px 28px rgba(25,30,50,.045);
     }
 
     .card-title {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
+        justify-content: space-between;
+        margin-bottom: 22px;
+    }
+
+    .title-left {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .title-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: var(--primary-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
     }
 
     .card-title h2 {
         margin: 0;
-        font-size: 21px;
+        font-size: 19px;
+        color: var(--text);
     }
 
-    .card-title span {
-        font-size: 24px;
+    .view-all {
+        color: var(--primary);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
     }
 
-    /* Resume */
+    /* ================================
+       RESUME SCORE
+    ================================= */
+
     .resume-box {
-        background: #faf9ff;
-        border-radius: 18px;
-        padding: 22px;
+        background: linear-gradient(145deg,#faf9ff,#f5f3ff);
+        border: 1px solid #ebe8ff;
+        border-radius: 19px;
+        padding: 28px;
         text-align: center;
     }
 
     .resume-score {
-        width: 130px;
-        height: 130px;
+        width: 145px;
+        height: 145px;
         border-radius: 50%;
-        margin: 10px auto 20px;
+        margin: 3px auto 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: conic-gradient(#6c63ff 0%, #e9e7ff 0%);
         position: relative;
+        background: conic-gradient(
+            var(--primary) {{ resume_score or 0 }}%,
+            #e5e3f8 0
+        );
     }
 
     .resume-score::before {
         content: "";
         position: absolute;
-        width: 100px;
-        height: 100px;
+        width: 111px;
+        height: 111px;
         background: white;
         border-radius: 50%;
     }
@@ -237,139 +422,341 @@
     .score-text {
         position: relative;
         z-index: 2;
-        font-size: 25px;
-        font-weight: 800;
+        font-size: 29px;
+        font-weight: 850;
+        color: var(--text);
+    }
+
+    .resume-box h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+        color: var(--text);
+    }
+
+    .resume-box p {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+        max-width: 450px;
+        margin: auto;
     }
 
     .upload-btn {
         display: inline-block;
-        background: linear-gradient(135deg, #6c63ff, #8b7cff);
+        background: linear-gradient(135deg,var(--primary),#8174f3);
         color: white;
-        padding: 13px 25px;
+        padding: 12px 22px;
         border-radius: 12px;
         text-decoration: none;
         font-weight: 700;
-        margin-top: 10px;
-        transition: 0.3s;
+        font-size: 14px;
+        margin-top: 18px;
+        box-shadow: 0 8px 18px rgba(98,87,232,.22);
+        transition: .25s;
     }
 
     .upload-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(108,99,255,0.25);
+        box-shadow: 0 12px 25px rgba(98,87,232,.3);
     }
 
-    /* Quick Actions */
+    /* ================================
+       QUICK ACTIONS
+    ================================= */
+
     .actions {
         display: grid;
-        gap: 12px;
+        gap: 11px;
     }
 
     .action {
         text-decoration: none;
-        color: #222;
-        background: #fafafa;
-        border: 1px solid #eee;
-        padding: 17px;
+        color: var(--text);
+        background: #fafbfe;
+        border: 1px solid #eceef4;
+        padding: 14px;
         border-radius: 15px;
         display: flex;
         align-items: center;
-        gap: 15px;
-        transition: 0.3s;
+        gap: 14px;
+        transition: .25s;
     }
 
     .action:hover {
-        background: #f4f2ff;
-        border-color: #d8d3ff;
-        transform: translateX(4px);
+        background: #f5f3ff;
+        border-color: #dcd8ff;
+        transform: translateX(5px);
     }
 
     .action-icon {
-        width: 43px;
-        height: 43px;
-        border-radius: 12px;
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        border-radius: 13px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #eeeaff;
-        font-size: 21px;
+        background: var(--primary-light);
+        font-size: 20px;
     }
 
     .action-text strong {
         display: block;
+        font-size: 14px;
         margin-bottom: 3px;
     }
 
     .action-text small {
-        color: #777;
+        color: var(--muted);
+        font-size: 12px;
     }
 
-    /* Empty Match */
+    .action-arrow {
+        margin-left: auto;
+        color: #a0a5b4;
+        font-size: 18px;
+    }
+
+    /* ================================
+       RECOMMENDATION
+    ================================= */
+
+    .match-intro {
+        background: linear-gradient(135deg,#f4f2ff,#faf9ff);
+        border: 1px solid #e9e5ff;
+        border-radius: 17px;
+        padding: 20px;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .match-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        background: #e5e1ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+    }
+
+    .match-intro strong {
+        color: var(--text);
+    }
+
+    .match-intro p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+    }
+
     .empty-match {
         text-align: center;
-        padding: 30px 10px;
-        color: #777;
+        padding: 28px 15px 12px;
     }
 
     .empty-match .emoji {
-        font-size: 45px;
-        margin-bottom: 10px;
+        width: 75px;
+        height: 75px;
+        border-radius: 22px;
+        background: #f2f0ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        font-size: 35px;
+    }
+
+    .empty-match h3 {
+        margin: 15px 0 6px;
+        color: var(--text);
+    }
+
+    .empty-match p {
+        color: var(--muted);
+        max-width: 520px;
+        margin: auto;
+        line-height: 1.6;
+        font-size: 14px;
     }
 
     .find-btn {
         display: inline-block;
-        margin-top: 15px;
-        background: #222;
+        margin-top: 18px;
+        background: var(--text);
         color: white;
         text-decoration: none;
         padding: 11px 20px;
-        border-radius: 10px;
+        border-radius: 11px;
+        font-weight: 700;
+        font-size: 13px;
+        transition: .25s;
+    }
+
+    .find-btn:hover {
+        background: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    /* ================================
+       BOTTOM INFO
+    ================================= */
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-top: 25px;
+    }
+
+    .progress-item {
+        margin-bottom: 20px;
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 13px;
         font-weight: 700;
     }
 
-    /* Mobile */
-    @media(max-width: 850px) {
+    .progress-header span:last-child {
+        color: var(--primary);
+    }
+
+    .progress-bar {
+        height: 9px;
+        border-radius: 20px;
+        background: #eeeef5;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg,var(--primary),#978cff);
+    }
+
+    .tip-box {
+        background: linear-gradient(135deg,#6257e8,#8174f3);
+        color: white;
+        border-radius: 22px;
+        padding: 25px;
+        display: flex;
+        gap: 17px;
+        align-items: flex-start;
+        box-shadow: 0 12px 30px rgba(98,87,232,.18);
+    }
+
+    .tip-icon {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        border-radius: 14px;
+        background: rgba(255,255,255,.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+    }
+
+    .tip-box h3 {
+        margin: 0 0 5px;
+        font-size: 16px;
+    }
+
+    .tip-box p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+        opacity: .9;
+    }
+
+    /* ================================
+       MOBILE
+    ================================= */
+
+    @media(max-width:900px) {
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .main-grid,
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-visual {
+            width: 130px;
+            height: 130px;
+            font-size: 60px;
+        }
+
+        .hero-text h1 {
+            font-size: 31px;
+        }
+    }
+
+    @media(max-width:650px) {
+
+        .dashboard-page {
+            padding: 18px 12px 45px;
+        }
+
         .dashboard-hero {
-            padding: 28px;
+            padding: 28px 23px;
+            border-radius: 22px;
+            min-height: auto;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .hero-text h1 {
             font-size: 27px;
         }
 
-        .stats-grid {
-            grid-template-columns: 1fr;
+        .hero-buttons {
+            flex-wrap: wrap;
         }
 
-        .main-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media(max-width: 600px) {
-        .dashboard-page {
-            padding: 20px 14px 40px;
-        }
-
-        .dashboard-hero {
-            flex-direction: column;
-            align-items: flex-start;
-            border-radius: 22px;
-        }
-
-        .hero-icon {
-            width: 70px;
-            height: 70px;
-            font-size: 35px;
+        .hero-visual {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            font-size: 40px;
         }
 
         .profile-card {
-            flex-direction: column;
             align-items: flex-start;
+            flex-direction: column;
         }
 
         .profile-btn {
             width: 100%;
             text-align: center;
+            box-sizing: border-box;
+        }
+
+        .dashboard-card {
+            padding: 20px;
+            border-radius: 19px;
+        }
+
+        .card-title h2 {
+            font-size: 17px;
+        }
+
+        .resume-box {
+            padding: 22px 15px;
+        }
+
+        .stat-card {
+            padding: 20px;
         }
     }
 </style>
@@ -377,28 +764,56 @@
 
 <div class="dashboard-page">
 
-    <!-- HERO -->
+<div class="dashboard-container">
+
+    <!-- ================= HERO ================= -->
+
     <section class="dashboard-hero">
 
-        <div class="hero-text">
-            <h1>
-                Welcome back, {{ user.name }} 👋
-            </h1>
+        <div class="hero-content">
 
-            <p>
-                Discover opportunities that match your
-                skills, interests and career goals.
-            </p>
+            <div class="welcome-small">
+                Student Dashboard
+            </div>
+
+            <div class="hero-text">
+
+                <h1>
+                    Welcome back, {{ user.name }} 👋
+                </h1>
+
+                <p>
+                    Discover opportunities that match your
+                    skills, interests and career goals.
+                </p>
+
+            </div>
+
+            <div class="hero-buttons">
+
+                <a href="{{ url_for('profile') }}"
+                   class="hero-btn primary">
+                    Complete Profile →
+                </a>
+
+                <a href="{{ url_for('matches') }}"
+                   class="hero-btn secondary">
+                    Explore Matches
+                </a>
+
+            </div>
+
         </div>
 
-        <div class="hero-icon">
+        <div class="hero-visual">
             🚀
         </div>
 
     </section>
 
 
-    <!-- PROFILE -->
+    <!-- ================= PROFILE ================= -->
+
     <div class="profile-card">
 
         <div class="profile-left">
@@ -408,267 +823,137 @@
             </div>
 
             <div class="profile-info">
-                <h3>Your SkillMatch Profile</h3>
+
+                <h3>
+                    Your SkillMatch Profile
+                </h3>
 
                 <p>
+
                     {% if user.bio %}
-                        {{ user.bio[:80] }}
+
+                        {{ user.bio[:100] }}
+
                     {% else %}
-                        Complete your profile to get better matches.
+
+                        Complete your profile to get better
+                        personalized matches.
+
                     {% endif %}
+
                 </p>
+
             </div>
 
         </div>
 
-        <a href="{{ url_for('profile') }}" class="profile-btn">
-            Complete Your Profile →
+        <a href="{{ url_for('profile') }}"
+           class="profile-btn">
+
+            Edit Profile →
+
         </a>
 
     </div>
 
 
-    <!-- STATS -->
+    <!-- ================= STATS ================= -->
+
     <div class="stats-grid">
 
         <!-- Resume -->
+
         <div class="stat-card">
 
-            <div class="stat-icon resume-icon">
-                📄
+            <div class="stat-top">
+
+                <div class="stat-icon resume-icon">
+                    📄
+                </div>
+
+                <span class="stat-badge">
+                    AI Powered
+                </span>
+
             </div>
 
-            <h4>Resume Score</h4>
+            <h4>RESUME SCORE</h4>
 
             <div class="stat-number">
                 {{ resume_score or 0 }}%
             </div>
 
-            <a href="{{ url_for('resume') }}" class="stat-link">
-                Upload / Improve Resume →
+            <a href="{{ url_for('resume') }}"
+               class="stat-link">
+
+                Improve Resume →
+
             </a>
 
         </div>
 
 
         <!-- Skills -->
+
         <div class="stat-card">
 
-            <div class="stat-icon skills-icon">
-                💡
+            <div class="stat-top">
+
+                <div class="stat-icon skills-icon">
+                    💡
+                </div>
+
+                <span class="stat-badge">
+                    Detected
+                </span>
+
             </div>
 
-            <h4>Skills</h4>
+            <h4>YOUR SKILLS</h4>
 
             <div class="stat-number">
                 {{ skills_count or 0 }}
             </div>
 
-            <a href="{{ url_for('profile') }}" class="stat-link">
+            <a href="{{ url_for('profile') }}"
+               class="stat-link">
+
                 Manage Skills →
+
             </a>
 
         </div>
 
 
         <!-- Matches -->
+
         <div class="stat-card">
 
-            <div class="stat-icon matches-icon">
-                🎯
+            <div class="stat-top">
+
+                <div class="stat-icon matches-icon">
+                    🎯
+                </div>
+
+                <span class="stat-badge">
+                    Personalized
+                </span>
+
             </div>
 
-            <h4>Matches</h4>
+            <h4>JOB MATCHES</h4>
 
             <div class="stat-number">
                 {{ matches_count or 0 }}
             </div>
 
-            <a href="{{ url_for('matches') }}" class="stat-link">
-                View Matches →
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <!-- MAIN CONTENT -->
-    <div class="main-grid">
-
-
-        <!-- RESUME -->
-        <div class="dashboard-card">
-
-            <div class="card-title">
-                <span>🤖</span>
-                <h2>AI Resume Screening</h2>
-            </div>
-
-            <div class="resume-box">
-
-                <div class="resume-score"
-                     style="background: conic-gradient(#6c63ff {{ resume_score or 0 }}%, #e9e7ff 0%);">
-
-                    <div class="score-text">
-                        {{ resume_score or 0 }}%
-                    </div>
-
-                </div>
-
-                {% if resume_score and resume_score > 0 %}
-
-                    <h3>Your resume has been analyzed!</h3>
-
-                    <p>
-                        Your SkillMatch score is
-                        <strong>{{ resume_score }}%</strong>.
-                    </p>
-
-                    <a href="{{ url_for('resume') }}"
-                       class="upload-btn">
-                        Improve Resume
-                    </a>
-
-                {% else %}
-
-                    <h3>Analyze your resume</h3>
-
-                    <p>
-                        Upload your resume and let SkillMatch
-                        identify your skills automatically.
-                    </p>
-
-                    <a href="{{ url_for('resume') }}"
-                       class="upload-btn">
-                        📄 Upload Resume
-                    </a>
-
-                {% endif %}
-
-            </div>
-
-        </div>
-
-
-        <!-- QUICK ACTIONS -->
-        <div class="dashboard-card">
-
-            <div class="card-title">
-                <span>⚡</span>
-                <h2>Quick Actions</h2>
-            </div>
-
-            <div class="actions">
-
-                <a href="{{ url_for('profile') }}" class="action">
-
-                    <div class="action-icon">
-                        👤
-                    </div>
-
-                    <div class="action-text">
-                        <strong>Edit Profile</strong>
-                        <small>Update your skills & interests</small>
-                    </div>
-
-                </a>
-
-
-                <a href="{{ url_for('resume') }}" class="action">
-
-                    <div class="action-icon">
-                        📄
-                    </div>
-
-                    <div class="action-text">
-                        <strong>Upload Resume</strong>
-                        <small>Get your resume score</small>
-                    </div>
-
-                </a>
-
-
-                <a href="{{ url_for('matches') }}" class="action">
-
-                    <div class="action-icon">
-                        🎯
-                    </div>
-
-                    <div class="action-text">
-                        <strong>Find Matches</strong>
-                        <small>Discover suitable opportunities</small>
-                    </div>
-
-                </a>
-
-
-                <a href="{{ url_for('jobs') }}" class="action">
-
-                    <div class="action-icon">
-                        💼
-                    </div>
-
-                    <div class="action-text">
-                        <strong>Explore Jobs</strong>
-                        <small>Find jobs based on your skills</small>
-                    </div>
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- MATCHES -->
-    <div class="dashboard-card" style="margin-top:25px;">
-
-        <div class="card-title">
-            <span>🎯</span>
-            <h2>Recommended Opportunities</h2>
-        </div>
-
-        {% if matches_count and matches_count > 0 %}
-
-            <p>
-                We found <strong>{{ matches_count }}</strong>
-                opportunities matching your profile.
-            </p>
-
             <a href="{{ url_for('matches') }}"
-               class="upload-btn">
-                View My Matches →
+               class="stat-link">
+
+                View Matches →
+
             </a>
 
-        {% else %}
-
-            <div class="empty-match">
-
-                <div class="emoji">
-                    🔍
-                </div>
-
-                <h3>No matches yet</h3>
-
-                <p>
-                    Complete your profile and upload your resume
-                    to discover personalized opportunities.
-                </p>
-
-                <a href="{{ url_for('profile') }}"
-                   class="find-btn">
-                    Complete Profile
-                </a>
-
-            </div>
-
-        {% endif %}
+        </div>
 
     </div>
-
-</div>
-
-{% endblock %}
