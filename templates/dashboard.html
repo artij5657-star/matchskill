@@ -3,957 +3,1962 @@
 {% block content %}
 
 <style>
-    /* ================================
-       SKILLMATCH MODERN DASHBOARD
-    ================================= */
+/* =========================================================
+   SKILLMATCH DASHBOARD
+   ========================================================= */
 
-    :root {
-        --primary: #6257e8;
-        --primary-dark: #4b3fd1;
-        --primary-light: #eeecff;
-        --text: #172033;
-        --muted: #788197;
-        --border: #e9eaf1;
-        --bg: #f7f8fc;
-        --white: #ffffff;
-        --green: #20b486;
-        --orange: #f59e0b;
-        --blue: #3b82f6;
-    }
+:root {
+    --primary: #6257e8;
+    --primary-dark: #4939c9;
+    --primary-light: #efedff;
 
-    .dashboard-page {
-        min-height: 100vh;
-        background:
-            radial-gradient(circle at 10% 0%, #eeeaff 0, transparent 28%),
-            radial-gradient(circle at 95% 10%, #e8f4ff 0, transparent 25%),
-            var(--bg);
-        padding: 35px 25px 70px;
-    }
+    --blue: #3b82f6;
+    --green: #16a979;
+    --orange: #f59e0b;
+    --pink: #ec4899;
 
-    .dashboard-container {
-        max-width: 1250px;
-        margin: auto;
-    }
+    --text: #172033;
+    --muted: #788197;
 
-    /* ================================
-       HERO
-    ================================= */
+    --border: #e8e9f1;
+    --background: #f7f8fc;
+    --white: #ffffff;
 
-    .dashboard-hero {
-        position: relative;
-        overflow: hidden;
-        min-height: 250px;
-        padding: 42px 45px;
-        border-radius: 30px;
-        background: linear-gradient(
+    --shadow: 0 10px 35px rgba(25, 30, 60, 0.07);
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.dashboard-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(98, 87, 232, 0.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 95% 5%,
+            rgba(59, 130, 246, 0.10),
+            transparent 25%
+        ),
+        var(--background);
+
+    padding: 35px 24px 70px;
+}
+
+.dashboard-container {
+    width: min(1250px, 100%);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.dashboard-hero {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 280px;
+
+    padding: 45px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
             120deg,
             #5145cd 0%,
             #695de9 48%,
-            #887cf5 100%
+            #8a7df6 100%
         );
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 25px;
-        box-shadow: 0 20px 50px rgba(82, 69, 205, .22);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 22px 55px rgba(82, 69, 205, 0.25);
+}
+
+.dashboard-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 360px;
+    height: 360px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    right: 100px;
+    top: -230px;
+}
+
+.dashboard-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    right: -80px;
+    bottom: -150px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 680px;
+}
+
+.welcome-small {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 12px;
+
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.13);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+
+    margin-bottom: 14px;
+}
+
+.hero-text h1 {
+    margin: 0 0 14px;
+
+    font-size: 40px;
+    line-height: 1.15;
+
+    font-weight: 850;
+}
+
+.hero-text p {
+    margin: 0;
+
+    max-width: 600px;
+
+    font-size: 16px;
+    line-height: 1.7;
+
+    opacity: 0.92;
+}
+
+.hero-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 27px;
+
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 13px 20px;
+
+    border-radius: 13px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    transition: 0.25s ease;
+}
+
+.hero-btn.primary {
+    background: white;
+
+    color: var(--primary-dark);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+.hero-btn.secondary {
+    color: white;
+
+    background: rgba(255, 255, 255, 0.13);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+}
+
+.hero-visual {
+    position: relative;
+    z-index: 2;
+
+    width: 175px;
+    height: 175px;
+
+    border-radius: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 82px;
+
+    background: rgba(255, 255, 255, 0.13);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    backdrop-filter: blur(14px);
+
+    transform: rotate(3deg);
+
+    box-shadow:
+        0 20px 45px rgba(30, 20, 100, 0.15);
+}
+
+
+/* =========================================================
+   PROFILE CARD
+   ========================================================= */
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px 25px;
+
+    margin-bottom: 25px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 22px;
+
+    box-shadow: var(--shadow);
+
+    transition: 0.25s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 40px rgba(25, 30, 60, 0.09);
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+}
+
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 19px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6257e8,
+            #9a8cff
+        );
+
+    color: white;
+
+    font-size: 26px;
+    font-weight: 850;
+
+    box-shadow:
+        0 10px 24px rgba(98, 87, 232, 0.25);
+}
+
+.profile-info h3 {
+    margin: 0 0 6px;
+
+    color: var(--text);
+
+    font-size: 18px;
+}
+
+.profile-info p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+.profile-btn {
+    padding: 12px 19px;
+
+    border-radius: 12px;
+
+    background: var(--primary-light);
+
+    color: var(--primary-dark);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    white-space: nowrap;
+
+    transition: 0.25s ease;
+}
+
+.profile-btn:hover {
+    background: var(--primary);
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 24px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 22px;
+
+    box-shadow: var(--shadow);
+
+    transition: 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 18px 45px rgba(25, 30, 60, 0.12);
+
+    border-color: #dcd8ff;
+}
+
+.stat-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    right: -45px;
+    top: -45px;
+
+    background: var(--primary-light);
+
+    opacity: 0.55;
+}
+
+.stat-top {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    font-size: 24px;
+}
+
+.resume-icon {
+    background: #fff4d8;
+}
+
+.skills-icon {
+    background: #e5f9f0;
+}
+
+.matches-icon {
+    background: #eeebff;
+}
+
+.stat-badge {
+    padding: 6px 10px;
+
+    border-radius: 30px;
+
+    background: #f5f5f8;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.stat-card h4 {
+    position: relative;
+    z-index: 2;
+
+    margin: 19px 0 5px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 750;
+
+    letter-spacing: 0.5px;
+}
+
+.stat-number {
+    position: relative;
+    z-index: 2;
+
+    margin-bottom: 6px;
+
+    color: var(--text);
+
+    font-size: 36px;
+    font-weight: 850;
+}
+
+.stat-link {
+    position: relative;
+    z-index: 2;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.stat-link:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
+
+.main-grid {
+    display: grid;
+
+    grid-template-columns: 1.35fr 1fr;
+
+    gap: 25px;
+
+    margin-bottom: 25px;
+}
+
+.dashboard-card {
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 22px;
+
+    padding: 27px;
+
+    box-shadow: var(--shadow);
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+.title-left {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+.title-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: var(--primary-light);
+
+    font-size: 20px;
+}
+
+.card-title h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 19px;
+}
+
+.view-all {
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   RESUME SCORE
+   ========================================================= */
+
+.resume-box {
+    padding: 30px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #faf9ff,
+            #f4f2ff
+        );
+
+    border: 1px solid #e8e4ff;
+
+    border-radius: 20px;
+}
+
+.resume-score {
+    width: 155px;
+    height: 155px;
+
+    margin: 5px auto 20px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            var(--primary) 0deg,
+            #e6e4f5 0deg
+        );
+
+    box-shadow:
+        0 15px 35px rgba(98, 87, 232, 0.18);
+
+    transition:
+        transform 0.3s ease,
+        background 0.8s ease;
+}
+
+.resume-score:hover {
+    transform: scale(1.05);
+}
+
+.resume-score::before {
+    content: "";
+
+    position: absolute;
+
+    width: 119px;
+    height: 119px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow:
+        inset 0 0 0 1px #eeeef5;
+}
+
+.score-text {
+    position: relative;
+    z-index: 2;
+
+    color: var(--text);
+
+    font-size: 30px;
+    font-weight: 850;
+}
+
+.resume-box h3 {
+    margin: 0 0 8px;
+
+    color: var(--text);
+
+    font-size: 19px;
+}
+
+.resume-box p {
+    max-width: 480px;
+
+    margin: 0 auto;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 19px;
+
+    padding: 12px 22px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            #8174f3
+        );
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    box-shadow:
+        0 9px 22px rgba(98, 87, 232, 0.23);
+
+    transition: 0.25s ease;
+}
+
+.upload-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 14px 30px rgba(98, 87, 232, 0.30);
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.actions {
+    display: grid;
+
+    gap: 12px;
+}
+
+.action {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 14px;
+
+    border-radius: 15px;
+
+    background: #fafbfe;
+
+    border: 1px solid #eceef4;
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    transition: 0.25s ease;
+}
+
+.action:hover {
+    transform: translateX(5px);
+
+    background: #f5f3ff;
+
+    border-color: #dcd8ff;
+}
+
+.action-icon {
+    width: 45px;
+    height: 45px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: var(--primary-light);
+
+    font-size: 20px;
+}
+
+.action-text {
+    min-width: 0;
+}
+
+.action-text strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 14px;
+}
+
+.action-text small {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.action-arrow {
+    margin-left: auto;
+
+    color: #a0a5b4;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   MATCH SECTION
+   ========================================================= */
+
+.match-intro {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 20px;
+
+    margin-bottom: 18px;
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f4f2ff,
+            #faf9ff
+        );
+
+    border: 1px solid #e9e5ff;
+}
+
+.match-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #e5e1ff;
+
+    font-size: 25px;
+}
+
+.match-intro strong {
+    color: var(--text);
+
+    font-size: 14px;
+}
+
+.match-intro p {
+    margin: 4px 0 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.empty-match {
+    padding: 30px 15px 15px;
+
+    text-align: center;
+}
+
+.empty-match .emoji {
+    width: 78px;
+    height: 78px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 23px;
+
+    background: #f2f0ff;
+
+    font-size: 35px;
+}
+
+.empty-match h3 {
+    margin: 16px 0 7px;
+
+    color: var(--text);
+
+    font-size: 18px;
+}
+
+.empty-match p {
+    max-width: 520px;
+
+    margin: auto;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+.find-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 19px;
+
+    padding: 11px 20px;
+
+    border-radius: 11px;
+
+    background: var(--text);
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    transition: 0.25s ease;
+}
+
+.find-btn:hover {
+    background: var(--primary);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   BOTTOM INFORMATION
+   ========================================================= */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+}
+
+.progress-item {
+    margin-bottom: 21px;
+}
+
+.progress-item:last-child {
+    margin-bottom: 0;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.progress-header span:last-child {
+    color: var(--primary);
+}
+
+.progress-bar {
+    height: 9px;
+
+    overflow: hidden;
+
+    border-radius: 30px;
+
+    background: #eeeef5;
+}
+
+.progress-fill {
+    width: 0;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--primary),
+            #978cff
+        );
+
+    transition:
+        width 0.8s ease;
+}
+
+
+/* =========================================================
+   CAREER TIP
+   ========================================================= */
+
+.tip-box {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 17px;
+
+    padding: 26px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6257e8,
+            #8174f3
+        );
+
+    color: white;
+
+    box-shadow:
+        0 15px 35px rgba(98, 87, 232, 0.20);
+}
+
+.tip-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    font-size: 23px;
+}
+
+.tip-box h3 {
+    margin: 0 0 6px;
+
+    font-size: 17px;
+}
+
+.tip-box p {
+    margin: 0;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+
+    opacity: 0.92;
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(12px);
     }
 
-    .dashboard-hero::before {
-        content: "";
-        position: absolute;
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background: rgba(255,255,255,.08);
-        right: 180px;
-        top: -160px;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 
-    .dashboard-hero::after {
-        content: "";
-        position: absolute;
-        width: 220px;
-        height: 220px;
-        border-radius: 50%;
-        background: rgba(255,255,255,.07);
-        right: -70px;
-        bottom: -120px;
+}
+
+.dashboard-container > * {
+    animation:
+        fadeUp 0.5s ease both;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 
-    .hero-content {
-        position: relative;
-        z-index: 2;
-        max-width: 650px;
+    .main-grid {
+        grid-template-columns: 1fr;
     }
 
-    .welcome-small {
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: .8px;
-        text-transform: uppercase;
-        opacity: .85;
-        margin-bottom: 8px;
-    }
-
-    .hero-text h1 {
-        font-size: 38px;
-        line-height: 1.15;
-        margin: 0 0 13px;
-        font-weight: 800;
-    }
-
-    .hero-text p {
-        margin: 0;
-        font-size: 16px;
-        line-height: 1.7;
-        opacity: .9;
-        max-width: 560px;
-    }
-
-    .hero-buttons {
-        display: flex;
-        gap: 12px;
-        margin-top: 25px;
-    }
-
-    .hero-btn {
-        text-decoration: none;
-        padding: 12px 19px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 14px;
-        transition: .25s;
-    }
-
-    .hero-btn.primary {
-        background: white;
-        color: var(--primary-dark);
-    }
-
-    .hero-btn.secondary {
-        background: rgba(255,255,255,.14);
-        color: white;
-        border: 1px solid rgba(255,255,255,.25);
-    }
-
-    .hero-btn:hover {
-        transform: translateY(-2px);
+    .info-grid {
+        grid-template-columns: 1fr;
     }
 
     .hero-visual {
-        position: relative;
-        z-index: 2;
-        width: 175px;
-        height: 175px;
-        border-radius: 35px;
-        background: rgba(255,255,255,.13);
-        border: 1px solid rgba(255,255,255,.18);
-        backdrop-filter: blur(12px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 85px;
-        transform: rotate(2deg);
+        width: 135px;
+        height: 135px;
+
+        font-size: 62px;
     }
 
-    /* ================================
-       PROFILE CARD
-    ================================= */
+    .hero-text h1 {
+        font-size: 32px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .dashboard-page {
+        padding: 18px 12px 45px;
+    }
+
+    .dashboard-hero {
+        min-height: auto;
+
+        padding: 28px 22px;
+
+        border-radius: 23px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .hero-text p {
+        font-size: 14px;
+    }
+
+    .hero-buttons {
+        width: 100%;
+    }
+
+    .hero-btn {
+        flex: 1;
+    }
+
+    .hero-visual {
+        width: 85px;
+        height: 85px;
+
+        border-radius: 22px;
+
+        font-size: 42px;
+
+        margin-top: 15px;
+    }
 
     .profile-card {
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: 22px;
-        padding: 22px 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        margin-bottom: 25px;
-        box-shadow: 0 8px 30px rgba(25,30,50,.05);
-    }
+        flex-direction: column;
 
-    .profile-left {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .profile-avatar {
-        width: 62px;
-        height: 62px;
-        flex-shrink: 0;
-        border-radius: 18px;
-        background: linear-gradient(135deg,#6257e8,#9b8cff);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 25px;
-        font-weight: 800;
-        box-shadow: 0 8px 20px rgba(98,87,232,.22);
-    }
-
-    .profile-info h3 {
-        margin: 0 0 5px;
-        font-size: 18px;
-        color: var(--text);
-    }
-
-    .profile-info p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
+        align-items: flex-start;
     }
 
     .profile-btn {
-        text-decoration: none;
-        background: var(--primary-light);
-        color: var(--primary-dark);
-        padding: 12px 19px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 14px;
-        white-space: nowrap;
-        transition: .25s;
-    }
+        width: 100%;
 
-    .profile-btn:hover {
-        background: var(--primary);
-        color: white;
-        transform: translateY(-2px);
-    }
+        box-sizing: border-box;
 
-    /* ================================
-       STAT CARDS
-    ================================= */
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3,1fr);
-        gap: 20px;
-        margin-bottom: 25px;
-    }
-
-    .stat-card {
-        position: relative;
-        overflow: hidden;
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 22px;
-        padding: 23px;
-        box-shadow: 0 8px 28px rgba(25,30,50,.045);
-        transition: .3s;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(25,30,50,.10);
-        border-color: #ddd9ff;
-    }
-
-    .stat-card::after {
-        content: "";
-        position: absolute;
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        right: -35px;
-        top: -35px;
-        background: var(--primary-light);
-        opacity: .5;
-    }
-
-    .stat-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .stat-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 23px;
-    }
-
-    .resume-icon {
-        background: #fff4d8;
-    }
-
-    .skills-icon {
-        background: #e5f9f0;
-    }
-
-    .matches-icon {
-        background: #eeebff;
-    }
-
-    .stat-badge {
-        font-size: 11px;
-        font-weight: 700;
-        padding: 5px 9px;
-        border-radius: 20px;
-        background: #f5f5f8;
-        color: var(--muted);
-    }
-
-    .stat-card h4 {
-        color: var(--muted);
-        font-size: 13px;
-        margin: 18px 0 4px;
-        font-weight: 700;
-    }
-
-    .stat-number {
-        font-size: 34px;
-        font-weight: 850;
-        color: var(--text);
-        margin-bottom: 5px;
-    }
-
-    .stat-link {
-        color: var(--primary);
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .stat-link:hover {
-        text-decoration: underline;
-    }
-
-    /* ================================
-       MAIN GRID
-    ================================= */
-
-    .main-grid {
-        display: grid;
-        grid-template-columns: 1.4fr 1fr;
-        gap: 25px;
-        margin-bottom: 25px;
+        text-align: center;
     }
 
     .dashboard-card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 22px;
-        padding: 27px;
-        box-shadow: 0 8px 28px rgba(25,30,50,.045);
+        padding: 20px;
+
+        border-radius: 19px;
     }
 
-    .card-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 22px;
-    }
-
-    .title-left {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-    }
-
-    .title-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        background: var(--primary-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 19px;
+    .resume-box {
+        padding: 23px 15px;
     }
 
     .card-title h2 {
-        margin: 0;
-        font-size: 19px;
-        color: var(--text);
+        font-size: 17px;
     }
-
-    .view-all {
-        color: var(--primary);
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    /* ================================
-       RESUME SCORE
-    ================================= */
-
-    .resume-box {
-        background: linear-gradient(145deg,#faf9ff,#f5f3ff);
-        border: 1px solid #ebe8ff;
-        border-radius: 19px;
-        padding: 28px;
-        text-align: center;
-    }
-
-    .resume-score {
-        width: 145px;
-        height: 145px;
-        border-radius: 50%;
-        margin: 3px auto 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        background: conic-gradient(
-            var(--primary) {{ resume_score or 0 }}%,
-            #e5e3f8 0
-        );
-    }
-
-    .resume-score::before {
-        content: "";
-        position: absolute;
-        width: 111px;
-        height: 111px;
-        background: white;
-        border-radius: 50%;
-    }
-
-    .score-text {
-        position: relative;
-        z-index: 2;
-        font-size: 29px;
-        font-weight: 850;
-        color: var(--text);
-    }
-
-    .resume-box h3 {
-        margin: 0 0 8px;
-        font-size: 18px;
-        color: var(--text);
-    }
-
-    .resume-box p {
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.6;
-        max-width: 450px;
-        margin: auto;
-    }
-
-    .upload-btn {
-        display: inline-block;
-        background: linear-gradient(135deg,var(--primary),#8174f3);
-        color: white;
-        padding: 12px 22px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 14px;
-        margin-top: 18px;
-        box-shadow: 0 8px 18px rgba(98,87,232,.22);
-        transition: .25s;
-    }
-
-    .upload-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 25px rgba(98,87,232,.3);
-    }
-
-    /* ================================
-       QUICK ACTIONS
-    ================================= */
-
-    .actions {
-        display: grid;
-        gap: 11px;
-    }
-
-    .action {
-        text-decoration: none;
-        color: var(--text);
-        background: #fafbfe;
-        border: 1px solid #eceef4;
-        padding: 14px;
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        transition: .25s;
-    }
-
-    .action:hover {
-        background: #f5f3ff;
-        border-color: #dcd8ff;
-        transform: translateX(5px);
-    }
-
-    .action-icon {
-        width: 44px;
-        height: 44px;
-        flex-shrink: 0;
-        border-radius: 13px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--primary-light);
-        font-size: 20px;
-    }
-
-    .action-text strong {
-        display: block;
-        font-size: 14px;
-        margin-bottom: 3px;
-    }
-
-    .action-text small {
-        color: var(--muted);
-        font-size: 12px;
-    }
-
-    .action-arrow {
-        margin-left: auto;
-        color: #a0a5b4;
-        font-size: 18px;
-    }
-
-    /* ================================
-       RECOMMENDATION
-    ================================= */
 
     .match-intro {
-        background: linear-gradient(135deg,#f4f2ff,#faf9ff);
-        border: 1px solid #e9e5ff;
-        border-radius: 17px;
-        padding: 20px;
-        margin-bottom: 18px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .match-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 15px;
-        background: #e5e1ff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 25px;
-    }
-
-    .match-intro strong {
-        color: var(--text);
-    }
-
-    .match-intro p {
-        margin: 4px 0 0;
-        color: var(--muted);
-        font-size: 13px;
-    }
-
-    .empty-match {
-        text-align: center;
-        padding: 28px 15px 12px;
-    }
-
-    .empty-match .emoji {
-        width: 75px;
-        height: 75px;
-        border-radius: 22px;
-        background: #f2f0ff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: auto;
-        font-size: 35px;
-    }
-
-    .empty-match h3 {
-        margin: 15px 0 6px;
-        color: var(--text);
-    }
-
-    .empty-match p {
-        color: var(--muted);
-        max-width: 520px;
-        margin: auto;
-        line-height: 1.6;
-        font-size: 14px;
-    }
-
-    .find-btn {
-        display: inline-block;
-        margin-top: 18px;
-        background: var(--text);
-        color: white;
-        text-decoration: none;
-        padding: 11px 20px;
-        border-radius: 11px;
-        font-weight: 700;
-        font-size: 13px;
-        transition: .25s;
-    }
-
-    .find-btn:hover {
-        background: var(--primary);
-        transform: translateY(-2px);
-    }
-
-    /* ================================
-       BOTTOM INFO
-    ================================= */
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-        margin-top: 25px;
-    }
-
-    .progress-item {
-        margin-bottom: 20px;
-    }
-
-    .progress-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .progress-header span:last-child {
-        color: var(--primary);
-    }
-
-    .progress-bar {
-        height: 9px;
-        border-radius: 20px;
-        background: #eeeef5;
-        overflow: hidden;
-    }
-
-    .progress-fill {
-        height: 100%;
-        border-radius: inherit;
-        background: linear-gradient(90deg,var(--primary),#978cff);
+        align-items: flex-start;
     }
 
     .tip-box {
-        background: linear-gradient(135deg,#6257e8,#8174f3);
-        color: white;
-        border-radius: 22px;
-        padding: 25px;
-        display: flex;
-        gap: 17px;
-        align-items: flex-start;
-        box-shadow: 0 12px 30px rgba(98,87,232,.18);
+        padding: 21px;
     }
 
-    .tip-icon {
-        width: 48px;
-        height: 48px;
-        flex-shrink: 0;
-        border-radius: 14px;
-        background: rgba(255,255,255,.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 23px;
-    }
-
-    .tip-box h3 {
-        margin: 0 0 5px;
-        font-size: 16px;
-    }
-
-    .tip-box p {
-        margin: 0;
-        font-size: 13px;
-        line-height: 1.6;
-        opacity: .9;
-    }
-
-    /* ================================
-       MOBILE
-    ================================= */
-
-    @media(max-width:900px) {
-
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .main-grid,
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .hero-visual {
-            width: 130px;
-            height: 130px;
-            font-size: 60px;
-        }
-
-        .hero-text h1 {
-            font-size: 31px;
-        }
-    }
-
-    @media(max-width:650px) {
-
-        .dashboard-page {
-            padding: 18px 12px 45px;
-        }
-
-        .dashboard-hero {
-            padding: 28px 23px;
-            border-radius: 22px;
-            min-height: auto;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .hero-text h1 {
-            font-size: 27px;
-        }
-
-        .hero-buttons {
-            flex-wrap: wrap;
-        }
-
-        .hero-visual {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            font-size: 40px;
-        }
-
-        .profile-card {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .profile-btn {
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .dashboard-card {
-            padding: 20px;
-            border-radius: 19px;
-        }
-
-        .card-title h2 {
-            font-size: 17px;
-        }
-
-        .resume-box {
-            padding: 22px 15px;
-        }
-
-        .stat-card {
-            padding: 20px;
-        }
-    }
+}
 </style>
 
 
+<!-- =========================================================
+     DASHBOARD
+     ========================================================= -->
+
 <div class="dashboard-page">
 
-<div class="dashboard-container">
-
-    <!-- ================= HERO ================= -->
-
-    <section class="dashboard-hero">
-
-        <div class="hero-content">
-
-            <div class="welcome-small">
-                Student Dashboard
-            </div>
-
-            <div class="hero-text">
-
-                <h1>
-                    Welcome back, {{ user.name }} 👋
-                </h1>
-
-                <p>
-                    Discover opportunities that match your
-                    skills, interests and career goals.
-                </p>
-
-            </div>
-
-            <div class="hero-buttons">
-
-                <a href="{{ url_for('profile') }}"
-                   class="hero-btn primary">
-                    Complete Profile →
-                </a>
-
-                <a href="{{ url_for('matches') }}"
-                   class="hero-btn secondary">
-                    Explore Matches
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="hero-visual">
-            🚀
-        </div>
-
-    </section>
+    <div class="dashboard-container">
 
 
-    <!-- ================= PROFILE ================= -->
+        <!-- =================================================
+             HERO
+             ================================================= -->
 
-    <div class="profile-card">
+        <section class="dashboard-hero">
 
-        <div class="profile-left">
+            <div class="hero-content">
 
-            <div class="profile-avatar">
-                {{ user.name[0]|upper }}
-            </div>
-
-            <div class="profile-info">
-
-                <h3>
-                    Your SkillMatch Profile
-                </h3>
-
-                <p>
-
-                    {% if user.bio %}
-
-                        {{ user.bio[:100] }}
-
-                    {% else %}
-
-                        Complete your profile to get better
-                        personalized matches.
-
-                    {% endif %}
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <a href="{{ url_for('profile') }}"
-           class="profile-btn">
-
-            Edit Profile →
-
-        </a>
-
-    </div>
-
-
-    <!-- ================= STATS ================= -->
-
-    <div class="stats-grid">
-
-        <!-- Resume -->
-
-        <div class="stat-card">
-
-            <div class="stat-top">
-
-                <div class="stat-icon resume-icon">
-                    📄
+                <div class="welcome-small">
+                    ✨ Student Dashboard
                 </div>
 
-                <span class="stat-badge">
-                    AI Powered
-                </span>
+                <div class="hero-text">
+
+                    <h1>
+                        Welcome back,
+                        {{ user.name|default('Student') }} 👋
+                    </h1>
+
+                    <p>
+                        Discover opportunities that match your
+                        skills, interests and career goals.
+                        Build your profile, improve your resume,
+                        and find your next opportunity.
+                    </p>
+
+                </div>
+
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="{{ url_for('profile') }}"
+                        class="hero-btn primary"
+                    >
+                        Complete Profile →
+                    </a>
+
+                    <a
+                        href="{{ url_for('matches') }}"
+                        class="hero-btn secondary"
+                    >
+                        Explore Matches
+                    </a>
+
+                </div>
 
             </div>
 
-            <h4>RESUME SCORE</h4>
 
-            <div class="stat-number">
-                {{ resume_score or 0 }}%
+            <div class="hero-visual">
+                🚀
             </div>
 
-            <a href="{{ url_for('resume') }}"
-               class="stat-link">
+        </section>
 
-                Improve Resume →
 
+        <!-- =================================================
+             PROFILE
+             ================================================= -->
+
+        <div class="profile-card">
+
+            <div class="profile-left">
+
+                <div class="profile-avatar">
+
+                    {{ (user.name|default('Student'))[0]|upper }}
+
+                </div>
+
+
+                <div class="profile-info">
+
+                    <h3>
+                        Your SkillMatch Profile
+                    </h3>
+
+                    <p>
+
+                        {% if user.bio %}
+
+                            {{ user.bio[:120] }}
+
+                        {% else %}
+
+                            Complete your profile to get
+                            better personalized matches.
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('profile') }}"
+                class="profile-btn"
+            >
+                Edit Profile →
             </a>
 
         </div>
 
 
-        <!-- Skills -->
+        <!-- =================================================
+             STATS
+             ================================================= -->
 
-        <div class="stat-card">
+        <div class="stats-grid">
 
-            <div class="stat-top">
 
-                <div class="stat-icon skills-icon">
+            <!-- RESUME -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon resume-icon">
+                        📄
+                    </div>
+
+                    <span class="stat-badge">
+                        AI Powered
+                    </span>
+
+                </div>
+
+
+                <h4>
+                    RESUME SCORE
+                </h4>
+
+
+                <div class="stat-number">
+                    {{ resume_score|default(0) }}%
+                </div>
+
+
+                <a
+                    href="{{ url_for('resume') }}"
+                    class="stat-link"
+                >
+                    Improve Resume →
+                </a>
+
+            </div>
+
+
+            <!-- SKILLS -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon skills-icon">
+                        💡
+                    </div>
+
+                    <span class="stat-badge">
+                        Detected
+                    </span>
+
+                </div>
+
+
+                <h4>
+                    YOUR SKILLS
+                </h4>
+
+
+                <div class="stat-number">
+                    {{ skills_count|default(0) }}
+                </div>
+
+
+                <a
+                    href="{{ url_for('profile') }}"
+                    class="stat-link"
+                >
+                    Manage Skills →
+                </a>
+
+            </div>
+
+
+            <!-- MATCHES -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon matches-icon">
+                        🎯
+                    </div>
+
+                    <span class="stat-badge">
+                        Personalized
+                    </span>
+
+                </div>
+
+
+                <h4>
+                    JOB MATCHES
+                </h4>
+
+
+                <div class="stat-number">
+                    {{ matches_count|default(0) }}
+                </div>
+
+
+                <a
+                    href="{{ url_for('matches') }}"
+                    class="stat-link"
+                >
+                    View Matches →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAIN GRID
+             ================================================= -->
+
+        <div class="main-grid">
+
+
+            <!-- =================================================
+                 RESUME PERFORMANCE
+                 ================================================= -->
+
+            <div class="dashboard-card">
+
+                <div class="card-title">
+
+                    <div class="title-left">
+
+                        <div class="title-icon">
+                            📊
+                        </div>
+
+                        <h2>
+                            Resume Performance
+                        </h2>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('resume') }}"
+                        class="view-all"
+                    >
+                        Open Resume
+                    </a>
+
+                </div>
+
+
+                <div class="resume-box">
+
+
+                    <!--
+                        data-score is used instead of
+                        Jinja inside CSS.
+                    -->
+
+                    <div
+                        class="resume-score"
+                        data-score="{{ resume_score|default(0) }}"
+                    >
+
+                        <div class="score-text">
+                            {{ resume_score|default(0) }}%
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        Your Resume Score
+                    </h3>
+
+
+                    <p>
+                        A stronger resume helps SkillMatch
+                        understand your experience and recommend
+                        better opportunities for you.
+                    </p>
+
+
+                    <a
+                        href="{{ url_for('resume') }}"
+                        class="upload-btn"
+                    >
+                        📄 Improve My Resume
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 QUICK ACTIONS
+                 ================================================= -->
+
+            <div class="dashboard-card">
+
+                <div class="card-title">
+
+                    <div class="title-left">
+
+                        <div class="title-icon">
+                            ⚡
+                        </div>
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+
+                    <a
+                        href="{{ url_for('profile') }}"
+                        class="action"
+                    >
+
+                        <div class="action-icon">
+                            👤
+                        </div>
+
+
+                        <div class="action-text">
+
+                            <strong>
+                                Update Profile
+                            </strong>
+
+                            <small>
+                                Keep your information updated
+                            </small>
+
+                        </div>
+
+
+                        <div class="action-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('resume') }}"
+                        class="action"
+                    >
+
+                        <div class="action-icon">
+                            📄
+                        </div>
+
+
+                        <div class="action-text">
+
+                            <strong>
+                                Improve Resume
+                            </strong>
+
+                            <small>
+                                Make your resume stronger
+                            </small>
+
+                        </div>
+
+
+                        <div class="action-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('matches') }}"
+                        class="action"
+                    >
+
+                        <div class="action-icon">
+                            🎯
+                        </div>
+
+
+                        <div class="action-text">
+
+                            <strong>
+                                Find Opportunities
+                            </strong>
+
+                            <small>
+                                Explore personalized matches
+                            </small>
+
+                        </div>
+
+
+                        <div class="action-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             OPPORTUNITY MATCHES
+             ================================================= -->
+
+        <div class="dashboard-card">
+
+            <div class="card-title">
+
+                <div class="title-left">
+
+                    <div class="title-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Opportunity Matches
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('matches') }}"
+                    class="view-all"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+            <div class="match-intro">
+
+                <div class="match-icon">
+                    ✨
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Personalized opportunities for you
+                    </strong>
+
+                    <p>
+                        SkillMatch uses your profile and skills
+                        to help you discover relevant career
+                        opportunities.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="empty-match">
+
+                <div class="emoji">
+                    🔎
+                </div>
+
+
+                <h3>
+                    Ready to find your next opportunity?
+                </h3>
+
+
+                <p>
+                    Explore available opportunities and discover
+                    roles that match your skills and career goals.
+                </p>
+
+
+                <a
+                    href="{{ url_for('matches') }}"
+                    class="find-btn"
+                >
+                    Explore Opportunities →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CAREER PROGRESS + TIP
+             ================================================= -->
+
+        <div class="info-grid">
+
+
+            <!-- CAREER PROGRESS -->
+
+            <div class="dashboard-card">
+
+                <div class="card-title">
+
+                    <div class="title-left">
+
+                        <div class="title-icon">
+                            📈
+                        </div>
+
+                        <h2>
+                            Career Progress
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESUME PROGRESS -->
+
+                <div class="progress-item">
+
+                    <div class="progress-header">
+
+                        <span>
+                            Resume Strength
+                        </span>
+
+                        <span
+                            class="resume-progress-value"
+                            data-value="{{ resume_score|default(0) }}"
+                        >
+                            {{ resume_score|default(0) }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            data-width="{{ resume_score|default(0) }}"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILLS PROGRESS -->
+
+                <div class="progress-item">
+
+                    <div class="progress-header">
+
+                        <span>
+                            Skills Added
+                        </span>
+
+                        <span>
+                            {{ skills_count|default(0) }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            data-width="70"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MATCHES PROGRESS -->
+
+                <div class="progress-item">
+
+                    <div class="progress-header">
+
+                        <span>
+                            Opportunity Discovery
+                        </span>
+
+                        <span>
+                            {{ matches_count|default(0) }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            data-width="60"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CAREER TIP -->
+
+            <div class="tip-box">
+
+                <div class="tip-icon">
                     💡
                 </div>
 
-                <span class="stat-badge">
-                    Detected
-                </span>
 
-            </div>
+                <div>
 
-            <h4>YOUR SKILLS</h4>
-
-            <div class="stat-number">
-                {{ skills_count or 0 }}
-            </div>
-
-            <a href="{{ url_for('profile') }}"
-               class="stat-link">
-
-                Manage Skills →
-
-            </a>
-
-        </div>
+                    <h3>
+                        Career Tip
+                    </h3>
 
 
-        <!-- Matches -->
+                    <p>
+                        Keep your profile, skills and resume
+                        updated. The more complete your profile
+                        is, the better SkillMatch can understand
+                        your strengths and recommend relevant
+                        opportunities.
+                    </p>
 
-        <div class="stat-card">
-
-            <div class="stat-top">
-
-                <div class="stat-icon matches-icon">
-                    🎯
                 </div>
 
-                <span class="stat-badge">
-                    Personalized
-                </span>
-
             </div>
-
-            <h4>JOB MATCHES</h4>
-
-            <div class="stat-number">
-                {{ matches_count or 0 }}
-            </div>
-
-            <a href="{{ url_for('matches') }}"
-               class="stat-link">
-
-                View Matches →
-
-            </a>
 
         </div>
 
+
     </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       RESUME CIRCULAR SCORE
+       ===================================================== */
+
+    const resumeCircle =
+        document.querySelector(".resume-score");
+
+    if (resumeCircle) {
+
+        let score =
+            Number(resumeCircle.dataset.score || 0);
+
+        score = Math.max(
+            0,
+            Math.min(100, score)
+        );
+
+        const degrees =
+            score * 3.6;
+
+        resumeCircle.style.background =
+            `conic-gradient(
+                var(--primary) ${degrees}deg,
+                #e6e4f5 ${degrees}deg
+            )`;
+    }
+
+
+    /* =====================================================
+       PROGRESS BARS
+       ===================================================== */
+
+    const progressBars =
+        document.querySelectorAll(".progress-fill");
+
+    progressBars.forEach(function (bar) {
+
+        let value =
+            Number(bar.dataset.width || 0);
+
+        value = Math.max(
+            0,
+            Math.min(100, value)
+        );
+
+        setTimeout(function () {
+
+            bar.style.width =
+                value + "%";
+
+        }, 150);
+
+    });
+
+});
+
+</script>
+
+
+{% endblock %}
