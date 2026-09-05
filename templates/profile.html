@@ -1,15 +1,648 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>My Profile | SkillMatch</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6c4df6;
+            --primary-dark: #5035c9;
+            --text: #20213d;
+            --muted: #777991;
+            --background: #f6f5fc;
+            --card: #ffffff;
+            --border: #e8e6f2;
+            --success: #20b486;
+        }
+
+        body {
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 76px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            padding: 11px 15px;
+            border-radius: 10px;
+
+            color: #5c6078;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            background: #f0edff;
+        }
+
+        .nav-links .login-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-links .login-btn:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        /* ================= MAIN ================= */
+
+        .profile-page {
+            max-width: 1250px;
+            margin: auto;
+            padding: 55px 24px 70px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .section-label {
+            display: inline-block;
+
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+
+            margin-bottom: 8px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+
+        .page-header h1 span {
+            color: var(--primary);
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        /* ================= ALERT ================= */
+
+        .alert {
+            padding: 13px 17px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+
+            background: #efeaff;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .alert.error {
+            background: #fff0f0;
+            color: #c0392b;
+        }
+
+        .alert.success {
+            background: #eafaf4;
+            color: #138a65;
+        }
+
+        /* ================= LAYOUT ================= */
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 310px 1fr;
+
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* ================= PROFILE CARD ================= */
+
+        .profile-card,
+        .profile-form-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+            border-radius: 22px;
+
+            box-shadow:
+                0 12px 35px rgba(54, 42, 110, 0.07);
+        }
+
+        .profile-card {
+            padding: 30px;
+
+            position: sticky;
+            top: 100px;
+        }
+
+        .profile-avatar {
+            width: 105px;
+            height: 105px;
+
+            border-radius: 50%;
+
+            margin: 0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            font-size: 42px;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7657ff,
+                    #9b76ee
+                );
+
+            box-shadow:
+                0 12px 25px rgba(108, 77, 246, 0.25);
+        }
+
+        .profile-card h2 {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .profile-email {
+            text-align: center;
+
+            color: var(--muted);
+            font-size: 14px;
+
+            margin: 3px 0 14px;
+        }
+
+        .profile-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 7px;
+
+            color: var(--success);
+
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-bottom: 25px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--success);
+        }
+
+        /* ================= PROFILE STATS ================= */
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+
+            border-right: 1px solid var(--border);
+        }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+        .stat strong {
+            display: block;
+
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .stat span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ================= PROFILE MENU ================= */
+
+        .profile-menu {
+            display: grid;
+            gap: 7px;
+        }
+
+        .profile-menu a {
+            padding: 12px 13px;
+
+            border-radius: 11px;
+
+            color: #62667d;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .profile-menu a:hover {
+            background: #f2efff;
+            color: var(--primary);
+            transform: translateX(3px);
+        }
+
+        /* ================= FORM CARD ================= */
+
+        .profile-form-card {
+            padding: 35px;
+        }
+
+        .card-title {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            padding-bottom: 24px;
+
+            border-bottom: 1px solid var(--border);
+
+            margin-bottom: 28px;
+        }
+
+        .card-title h2 {
+            font-size: 28px;
+        }
+
+        .edit-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            background: #f0edff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        /* ================= SECTIONS ================= */
+
+        section {
+            padding: 5px 0 30px;
+
+            margin-bottom: 25px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        section h3 {
+            font-size: 20px;
+
+            margin-bottom: 7px;
+        }
+
+        .section-description {
+            color: var(--muted);
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+        /* ================= FORM GRID ================= */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .form-group label {
+            font-weight: 700;
+
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+
+            border: 1px solid #ddd9ed;
+
+            background: #faf9fe;
+
+            border-radius: 11px;
+
+            padding: 13px 14px;
+
+            font: inherit;
+
+            color: var(--text);
+
+            outline: none;
+
+            transition: 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(108, 77, 246, 0.09);
+        }
+
+        .form-group input:disabled {
+            color: #777;
+            background: #f1f0f5;
+        }
+
+        .form-group small {
+            color: #9294a6;
+            font-size: 12px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 125px;
+        }
+
+        /* ================= SKILL BUTTONS ================= */
+
+        .suggested-skills,
+        .interest-chips {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 13px;
+        }
+
+        .suggested-skills span {
+            width: 100%;
+
+            font-size: 12px;
+
+            color: var(--muted);
+
+            font-weight: 700;
+        }
+
+        .suggested-skills button,
+        .interest-chips button {
+            border: 1px solid #ddd8f6;
+
+            background: #f8f6ff;
+
+            color: #5c45cf;
+
+            padding: 8px 12px;
+
+            border-radius: 999px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .suggested-skills button:hover,
+        .interest-chips button:hover {
+            background: var(--primary);
+
+            color: white;
+
+            border-color: var(--primary);
+
+            transform: translateY(-1px);
+        }
+
+        /* ================= FORM BUTTONS ================= */
+
+        .form-actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            padding-top: 5px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 13px 21px;
+
+            font-weight: 800;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+
+            color: white;
+
+            box-shadow:
+                0 8px 18px rgba(108, 77, 246, 0.22);
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-dark);
+
+            transform: translateY(-1px);
+        }
+
+        .secondary-btn {
+            background: #f0eef5;
+
+            color: #62667d;
+        }
+
+        .secondary-btn:hover {
+            background: #e6e3ed;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            background: white;
+
+            border-top: 1px solid var(--border);
+
+            padding: 25px;
+
+            text-align: center;
+
+            color: #888b9c;
+
+            font-size: 13px;
+        }
+
+        /* ================= TABLET ================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 2px;
+            }
+
+            .nav-links a {
+                padding: 9px 8px;
+                font-size: 13px;
+            }
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                position: static;
+            }
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 16px 18px;
+
+                display: block;
+            }
+
+            .logo {
+                margin-bottom: 12px;
+            }
+
+            .nav-links {
+                overflow-x: auto;
+
+                white-space: nowrap;
+            }
+
+            .profile-page {
+                padding: 35px 15px;
+            }
+
+            .page-header h1 {
+                font-size: 34px;
+            }
+
+            .profile-form-card {
+                padding: 22px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .primary-btn,
+            .secondary-btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -53,32 +686,28 @@
     </nav>
 
 
-    <!-- ================= PROFILE PAGE ================= -->
+    <!-- ================= MAIN ================= -->
 
     <main class="profile-page">
 
         <div class="page-header">
 
-            <div>
+            <span class="section-label">
+                MY ACCOUNT
+            </span>
 
-                <span class="section-label">
-                    MY ACCOUNT
-                </span>
+            <h1>
+                My <span>Profile</span>
+            </h1>
 
-                <h1>
-                    My <span>Profile</span>
-                </h1>
-
-                <p>
-                    Manage your personal information, skills and interests.
-                </p>
-
-            </div>
+            <p>
+                Manage your personal information, skills and interests.
+            </p>
 
         </div>
 
 
-        <!-- FLASH MESSAGES -->
+        <!-- ================= FLASH MESSAGES ================= -->
 
         {% with messages = get_flashed_messages(with_categories=true) %}
 
@@ -102,7 +731,7 @@
 
             <!-- ================= PROFILE CARD ================= -->
 
-            <div class="profile-card">
+            <aside class="profile-card">
 
                 <div class="profile-avatar">
 
@@ -119,14 +748,18 @@
                     {{ user.name }}
                 </h2>
 
+
                 <p class="profile-email">
                     {{ user.email }}
                 </p>
 
 
                 <div class="profile-status">
+
                     <span class="status-dot"></span>
+
                     Profile Active
+
                 </div>
 
 
@@ -161,11 +794,13 @@
                     <div class="stat">
 
                         <strong>
+
                             {% if user.resume_filename %}
                                 ✓
                             {% else %}
                                 —
                             {% endif %}
+
                         </strong>
 
                         <span>
@@ -197,7 +832,7 @@
 
                 </div>
 
-            </div>
+            </aside>
 
 
             <!-- ================= EDIT PROFILE ================= -->
@@ -243,8 +878,6 @@
                         <div class="form-grid">
 
 
-                            <!-- NAME -->
-
                             <div class="form-group">
 
                                 <label for="name">
@@ -262,8 +895,6 @@
 
                             </div>
 
-
-                            <!-- EMAIL -->
 
                             <div class="form-group">
 
@@ -285,8 +916,6 @@
                             </div>
 
 
-                            <!-- EDUCATION -->
-
                             <div class="form-group">
 
                                 <label for="education">
@@ -303,8 +932,6 @@
 
                             </div>
 
-
-                            <!-- COLLEGE -->
 
                             <div class="form-group">
 
@@ -323,8 +950,6 @@
                             </div>
 
 
-                            <!-- LOCATION -->
-
                             <div class="form-group">
 
                                 <label for="location">
@@ -341,8 +966,6 @@
 
                             </div>
 
-
-                            <!-- PHONE -->
 
                             <div class="form-group">
 
@@ -377,6 +1000,7 @@
                             Add the technologies and skills you are comfortable with.
                         </p>
 
+
                         <div class="form-group">
 
                             <label for="skills_input">
@@ -400,40 +1024,56 @@
 
                         <div class="suggested-skills">
 
-                            <span>Popular:</span>
+                            <span>
+                                Popular:
+                            </span>
 
-                            <button type="button"
-                                    onclick="addSkill('C++')">
+                            <button
+                                type="button"
+                                onclick="addSkill('C++')"
+                            >
                                 C++
                             </button>
 
-                            <button type="button"
-                                    onclick="addSkill('Python')">
+                            <button
+                                type="button"
+                                onclick="addSkill('Python')"
+                            >
                                 Python
                             </button>
 
-                            <button type="button"
-                                    onclick="addSkill('Java')">
+                            <button
+                                type="button"
+                                onclick="addSkill('Java')"
+                            >
                                 Java
                             </button>
 
-                            <button type="button"
-                                    onclick="addSkill('SQL')">
+                            <button
+                                type="button"
+                                onclick="addSkill('SQL')"
+                            >
                                 SQL
                             </button>
 
-                            <button type="button"
-                                    onclick="addSkill('HTML')">
+                            <button
+                                type="button"
+                                onclick="addSkill('HTML')"
+                            >
                                 HTML
                             </button>
 
-                            <button type="button"
-                                    onclick="addSkill('CSS')">
+                            <button
+                                type="button"
+                                onclick="addSkill('CSS')"
+                            >
                                 CSS
                             </button>
 
-                            <button type="button"
-                                    onclick="addSkill('JavaScript')">
+                            <button
+                                type="button"
+                                onclick="addSkill('JavaScript')"
+                            >
                                 JavaScript
                             </button>
 
@@ -453,6 +1093,7 @@
                         <p class="section-description">
                             Tell us what areas you are interested in.
                         </p>
+
 
                         <div class="form-group">
 
@@ -477,28 +1118,38 @@
 
                         <div class="interest-chips">
 
-                            <button type="button"
-                                    onclick="addInterest('Web Development')">
+                            <button
+                                type="button"
+                                onclick="addInterest('Web Development')"
+                            >
                                 🌐 Web Development
                             </button>
 
-                            <button type="button"
-                                    onclick="addInterest('Artificial Intelligence')">
+                            <button
+                                type="button"
+                                onclick="addInterest('Artificial Intelligence')"
+                            >
                                 🤖 Artificial Intelligence
                             </button>
 
-                            <button type="button"
-                                    onclick="addInterest('Data Science')">
+                            <button
+                                type="button"
+                                onclick="addInterest('Data Science')"
+                            >
                                 📊 Data Science
                             </button>
 
-                            <button type="button"
-                                    onclick="addInterest('Cyber Security')">
+                            <button
+                                type="button"
+                                onclick="addInterest('Cyber Security')"
+                            >
                                 🔐 Cyber Security
                             </button>
 
-                            <button type="button"
-                                    onclick="addInterest('Mobile Development')">
+                            <button
+                                type="button"
+                                onclick="addInterest('Mobile Development')"
+                            >
                                 📱 Mobile Development
                             </button>
 
@@ -514,6 +1165,7 @@
                         <h3>
                             About Me
                         </h3>
+
 
                         <div class="form-group">
 
@@ -538,13 +1190,14 @@
                     </section>
 
 
-                    <!-- ================= SOCIAL LINKS ================= -->
+                    <!-- ================= SOCIAL PROFILES ================= -->
 
                     <section>
 
                         <h3>
                             Social Profiles
                         </h3>
+
 
                         <div class="form-grid">
 
@@ -586,7 +1239,7 @@
                     </section>
 
 
-                    <!-- ================= SAVE BUTTON ================= -->
+                    <!-- ================= BUTTONS ================= -->
 
                     <div class="form-actions">
 
@@ -596,6 +1249,7 @@
                         >
                             Cancel
                         </button>
+
 
                         <button
                             type="submit"
@@ -619,13 +1273,9 @@
 
     <footer class="footer">
 
-        <div class="footer-bottom">
-
-            <p>
-                © 2026 SkillMatch. All rights reserved.
-            </p>
-
-        </div>
+        <p>
+            © 2026 SkillMatch. All rights reserved.
+        </p>
 
     </footer>
 
@@ -639,21 +1289,20 @@
             const input =
                 document.getElementById("skills_input");
 
-            let current =
-                input.value.trim();
-
-            let skills =
-                current
-                    ? current.split(",").map(s => s.trim())
+            let values =
+                input.value.trim()
+                    ? input.value
+                        .split(",")
+                        .map(s => s.trim())
+                        .filter(Boolean)
                     : [];
 
-            if (!skills.includes(skill)) {
-                skills.push(skill);
+            if (!values.includes(skill)) {
+                values.push(skill);
             }
 
             input.value =
-                skills.join(", ");
-
+                values.join(", ");
         }
 
 
@@ -662,47 +1311,45 @@
             const input =
                 document.getElementById("interests_input");
 
-            let current =
-                input.value.trim();
-
-            let interests =
-                current
-                    ? current.split(",").map(i => i.trim())
+            let values =
+                input.value.trim()
+                    ? input.value
+                        .split(",")
+                        .map(i => i.trim())
+                        .filter(Boolean)
                     : [];
 
-            if (!interests.includes(interest)) {
-                interests.push(interest);
+            if (!values.includes(interest)) {
+                values.push(interest);
             }
 
             input.value =
-                interests.join(", ");
-
+                values.join(", ");
         }
 
-
-        // Character counter for bio
 
         const bio =
             document.getElementById("bio");
 
         if (bio) {
 
-            bio.addEventListener("input", function() {
+            bio.addEventListener(
+                "input",
+                function () {
 
-                if (this.value.length > 500) {
+                    if (this.value.length > 500) {
 
-                    this.value =
-                        this.value.substring(0, 500);
+                        this.value =
+                            this.value.substring(0, 500);
+
+                    }
 
                 }
-
-            });
+            );
 
         }
 
     </script>
 
 </body>
-
 </html>
-```
