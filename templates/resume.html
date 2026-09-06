@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,8 +7,734 @@
 
     <title>Resume Screening | SkillMatch</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8ff;
+            color: #18213d;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            width: 100%;
+            min-height: 82px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid #e8e9f2;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: #202746;
+            letter-spacing: -1.5px;
+        }
+
+        .logo span {
+            color: #7161e8;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .nav-links a {
+            color: #59617b;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #6d5ce7;
+        }
+
+        .nav-links .login-btn {
+            color: #ffffff;
+            background: #6d5ce7;
+            padding: 13px 28px;
+            border-radius: 12px;
+        }
+
+        .nav-links .login-btn:hover {
+            color: #ffffff;
+            background: #5847d5;
+        }
+
+        /* ================= PAGE ================= */
+
+        .resume-page {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+            padding: 60px 0 80px;
+        }
+
+        .page-header {
+            margin-bottom: 38px;
+        }
+
+        .section-label {
+            display: inline-block;
+            color: #7161e8;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            margin-bottom: 10px;
+        }
+
+        .page-header h1 {
+            font-size: clamp(38px, 5vw, 54px);
+            line-height: 1.1;
+            color: #18213d;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+        }
+
+        .page-header h1 span,
+        .section-heading h2 span {
+            color: #7161e8;
+        }
+
+        .page-header p {
+            color: #707892;
+            font-size: 17px;
+            max-width: 700px;
+        }
+
+        /* ================= ALERT ================= */
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .alert.success {
+            background: #e9f9ef;
+            color: #23824a;
+            border: 1px solid #c8eed5;
+        }
+
+        .alert.error,
+        .alert.danger {
+            background: #fff0f0;
+            color: #c43d3d;
+            border: 1px solid #f3cccc;
+        }
+
+        .alert.warning {
+            background: #fff8e8;
+            color: #9a6a08;
+            border: 1px solid #f2dfaa;
+        }
+
+        /* ================= GRID ================= */
+
+        .resume-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        /* ================= CARDS ================= */
+
+        .resume-upload-card,
+        .resume-result-card {
+            background: #ffffff;
+            border: 1px solid #e8e9f2;
+            border-radius: 22px;
+            padding: 32px;
+            box-shadow: 0 15px 45px rgba(35, 42, 75, 0.07);
+        }
+
+        .resume-upload-card {
+            min-height: 570px;
+        }
+
+        .resume-result-card {
+            min-height: 570px;
+        }
+
+        .card-icon {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: #efedff;
+            font-size: 26px;
+            margin-bottom: 18px;
+        }
+
+        .resume-upload-card h2,
+        .resume-result-card h2 {
+            font-size: 28px;
+            color: #18213d;
+            margin-bottom: 8px;
+        }
+
+        .resume-upload-card > p {
+            color: #737b94;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* ================= UPLOAD BOX ================= */
+
+        .upload-box {
+            position: relative;
+            border: 2px dashed #c9c5ef;
+            border-radius: 18px;
+            min-height: 270px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 25px;
+            background: #fafaff;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .upload-box:hover,
+        .upload-box.dragging {
+            border-color: #7161e8;
+            background: #f4f2ff;
+            transform: translateY(-2px);
+        }
+
+        .upload-box.has-file {
+            border-color: #7161e8;
+            background: #f5f3ff;
+        }
+
+        .upload-box input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-content {
+            pointer-events: none;
+        }
+
+        .upload-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #7161e8;
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .upload-content h3 {
+            color: #252d49;
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .upload-content p {
+            color: #8a91a8;
+            font-size: 15px;
+        }
+
+        .upload-content p span {
+            color: #7161e8;
+            font-weight: 700;
+        }
+
+        .upload-content small {
+            display: block;
+            color: #9ba1b5;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* ================= SELECTED FILE ================= */
+
+        .selected-file {
+            align-items: center;
+            gap: 13px;
+            background: #f5f3ff;
+            border: 1px solid #dedaff;
+            border-radius: 13px;
+            padding: 13px 15px;
+            margin-top: 14px;
+        }
+
+        .file-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #ebe8ff;
+            font-size: 20px;
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-info strong {
+            display: block;
+            color: #303850;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-info span {
+            color: #858da4;
+            font-size: 12px;
+        }
+
+        .remove-file {
+            border: none;
+            background: transparent;
+            color: #d65b67;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .primary-btn {
+            width: 100%;
+            border: none;
+            border-radius: 11px;
+            padding: 15px 20px;
+            margin-top: 18px;
+            background: #7161e8;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .primary-btn:hover {
+            background: #5e4ed8;
+            transform: translateY(-1px);
+        }
+
+        .privacy-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 17px;
+            color: #8b92a8;
+            font-size: 12px;
+        }
+
+        /* ================= RESULT ================= */
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .result-header h2 {
+            margin-bottom: 0;
+        }
+
+        .success-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e7f8ee;
+            color: #25a15a;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        /* ================= SCORE ================= */
+
+        .score-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 28px;
+        }
+
+        .score-circle {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0eeff;
+            border: 13px solid #7161e8;
+            text-align: center;
+        }
+
+        .score-circle strong {
+            display: block;
+            color: #7161e8;
+            font-size: 42px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .score-circle span {
+            display: block;
+            color: #777f98;
+            font-size: 12px;
+            margin-top: 9px;
+        }
+
+        /* ================= SCORE MESSAGE ================= */
+
+        .score-message {
+            border-radius: 13px;
+            padding: 17px;
+            margin-bottom: 22px;
+        }
+
+        .score-message strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 17px;
+        }
+
+        .score-message p {
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .score-message.excellent {
+            background: #eaf9ef;
+            color: #227944;
+        }
+
+        .score-message.good {
+            background: #eef4ff;
+            color: #365d9f;
+        }
+
+        .score-message.improve {
+            background: #fff7e8;
+            color: #9b6a11;
+        }
+
+        /* ================= RESULT SECTION ================= */
+
+        .result-section {
+            border-top: 1px solid #ececf3;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .result-section h3 {
+            color: #28304a;
+            font-size: 16px;
+            margin-bottom: 13px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #efedff;
+            color: #6656d5;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .empty-text {
+            color: #8d94aa;
+            font-size: 13px;
+        }
+
+        /* ================= RESUME FILE ================= */
+
+        .resume-file {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: #f8f8fc;
+            border: 1px solid #e8e8f0;
+            border-radius: 13px;
+            margin-top: 22px;
+        }
+
+        .resume-file > div:nth-child(2) {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .resume-file strong {
+            display: block;
+            color: #343b53;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .resume-file p {
+            color: #8b92a8;
+            font-size: 11px;
+            margin: 2px 0 0;
+        }
+
+        .view-resume {
+            padding: 8px 13px;
+            border-radius: 8px;
+            background: #7161e8;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ================= EMPTY RESULT ================= */
+
+        .empty-result {
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 25px;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #efedff;
+            font-size: 34px;
+            margin-bottom: 20px;
+        }
+
+        .empty-result h2 {
+            margin-bottom: 8px;
+        }
+
+        .empty-result p {
+            color: #858da4;
+            font-size: 14px;
+            max-width: 300px;
+        }
+
+        .empty-features {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .empty-features div {
+            padding: 8px 11px;
+            border-radius: 9px;
+            background: #f5f4ff;
+            color: #646b84;
+            font-size: 11px;
+        }
+
+        .empty-features span {
+            color: #7161e8;
+            font-weight: 800;
+            margin-right: 4px;
+        }
+
+        /* ================= SCREENING SECTION ================= */
+
+        .screening-section {
+            margin-top: 80px;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-heading h2 {
+            color: #18213d;
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            color: #7b839a;
+            font-size: 14px;
+        }
+
+        .screening-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .screening-step {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e8e9f2;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(35, 42, 75, 0.05);
+        }
+
+        .step-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: #efedff;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .step-number {
+            position: absolute;
+            top: 20px;
+            right: 22px;
+            color: #d5d2ee;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .screening-step h3 {
+            color: #252d49;
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .screening-step p {
+            color: #8189a0;
+            font-size: 13px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            background: #ffffff;
+            border-top: 1px solid #e8e9f2;
+            padding: 25px 7%;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #8b92a8;
+            font-size: 12px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .resume-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screening-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                min-height: auto;
+                padding: 18px 5%;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px 18px;
+            }
+
+            .resume-page {
+                padding-top: 40px;
+            }
+
+            .resume-upload-card,
+            .resume-result-card {
+                padding: 22px;
+                border-radius: 17px;
+            }
+
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+            .screening-section {
+                margin-top: 55px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -61,27 +786,23 @@
 
         <div class="page-header">
 
-            <div>
+            <span class="section-label">
+                AI RESUME SCREENING
+            </span>
 
-                <span class="section-label">
-                    AI RESUME SCREENING
-                </span>
+            <h1>
+                Analyze Your <span>Resume</span>
+            </h1>
 
-                <h1>
-                    Analyze Your <span>Resume</span>
-                </h1>
-
-                <p>
-                    Upload your resume and let SkillMatch identify
-                    your skills and calculate your profile match score.
-                </p>
-
-            </div>
+            <p>
+                Upload your resume and let SkillMatch identify
+                your skills and calculate your profile match score.
+            </p>
 
         </div>
 
 
-        <!-- FLASH MESSAGES -->
+        <!-- ================= FLASH MESSAGES ================= -->
 
         {% with messages = get_flashed_messages(with_categories=true) %}
 
@@ -99,6 +820,8 @@
 
         {% endwith %}
 
+
+        <!-- ================= RESUME GRID ================= -->
 
         <div class="resume-grid">
 
@@ -130,8 +853,10 @@
 
                     <!-- DROP ZONE -->
 
-                    <div class="upload-box"
-                         id="uploadBox">
+                    <div
+                        class="upload-box"
+                        id="uploadBox"
+                    >
 
                         <input
                             type="file"
@@ -144,7 +869,7 @@
                         <div class="upload-content">
 
                             <div class="upload-icon">
-                                ⬆
+                                ↑
                             </div>
 
                             <h3>
@@ -152,8 +877,7 @@
                             </h3>
 
                             <p>
-                                or
-                                <span>browse files</span>
+                                or <span>browse files</span>
                             </p>
 
                             <small>
@@ -204,7 +928,7 @@
 
                     <button
                         type="submit"
-                        class="primary-btn upload-btn"
+                        class="primary-btn"
                     >
                         Analyze Resume ✨
                     </button>
@@ -215,6 +939,7 @@
                 <div class="privacy-note">
 
                     🔒
+
                     <span>
                         Your resume is securely processed and
                         used only for skill matching.
@@ -225,7 +950,7 @@
             </div>
 
 
-            <!-- ================= SCREENING RESULT ================= -->
+            <!-- ================= RESULT CARD ================= -->
 
             <div class="resume-result-card">
 
@@ -263,7 +988,7 @@
                             <div>
 
                                 <strong>
-                                    {{ user.resume_score or 0 }}%
+                                    {{ user.resume_score|default(0, true) }}%
                                 </strong>
 
                                 <span>
@@ -279,7 +1004,7 @@
 
                     <!-- SCORE MESSAGE -->
 
-                    {% if user.resume_score and user.resume_score >= 80 %}
+                    {% if user.resume_score is not none and user.resume_score >= 80 %}
 
                         <div class="score-message excellent">
 
@@ -294,7 +1019,8 @@
 
                         </div>
 
-                    {% elif user.resume_score and user.resume_score >= 60 %}
+
+                    {% elif user.resume_score is not none and user.resume_score >= 60 %}
 
                         <div class="score-message good">
 
@@ -308,6 +1034,7 @@
                             </p>
 
                         </div>
+
 
                     {% else %}
 
@@ -381,8 +1108,7 @@
                         </div>
 
                         <a
-                            href="{{ url_for('static',
-                                filename='uploads/' ~ user.resume_filename) }}"
+                            href="{{ url_for('static', filename='uploads/' ~ user.resume_filename) }}"
                             target="_blank"
                             class="view-resume"
                         >
@@ -575,16 +1301,20 @@
             document.getElementById("fileSize");
 
 
-        // File selected
+        /* ================= FILE SELECTED ================= */
 
         resumeInput.addEventListener("change", function () {
 
-            showSelectedFile(this.files[0]);
+            if (this.files && this.files.length > 0) {
+
+                showSelectedFile(this.files[0]);
+
+            }
 
         });
 
 
-        // Display selected file
+        /* ================= DISPLAY FILE ================= */
 
         function showSelectedFile(file) {
 
@@ -606,7 +1336,7 @@
         }
 
 
-        // Format file size
+        /* ================= FORMAT FILE SIZE ================= */
 
         function formatFileSize(bytes) {
 
@@ -624,9 +1354,10 @@
 
             return (
                 parseFloat(
-                    (bytes /
-                    Math.pow(1024, i))
-                    .toFixed(2)
+                    (
+                        bytes /
+                        Math.pow(1024, i)
+                    ).toFixed(2)
                 )
                 + " "
                 + units[i]
@@ -635,7 +1366,7 @@
         }
 
 
-        // Remove selected file
+        /* ================= REMOVE FILE ================= */
 
         function removeFile() {
 
@@ -649,7 +1380,7 @@
         }
 
 
-        // Drag and drop
+        /* ================= DRAG OVER ================= */
 
         uploadBox.addEventListener(
             "dragover",
@@ -663,6 +1394,8 @@
         );
 
 
+        /* ================= DRAG LEAVE ================= */
+
         uploadBox.addEventListener(
             "dragleave",
             function () {
@@ -672,6 +1405,8 @@
             }
         );
 
+
+        /* ================= DROP ================= */
 
         uploadBox.addEventListener(
             "drop",
@@ -697,7 +1432,7 @@
         );
 
 
-        // File validation
+        /* ================= FORM VALIDATION ================= */
 
         document
             .getElementById("resumeForm")
@@ -717,19 +1452,29 @@
                         );
 
                         return;
-
                     }
 
 
-                    const allowedTypes =
+                    const allowedExtensions =
                         [
-                            "application/pdf",
-                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                            "application/msword"
+                            ".pdf",
+                            ".doc",
+                            ".docx"
                         ];
 
 
-                    if (!allowedTypes.includes(file.type)) {
+                    const fileNameLower =
+                        file.name.toLowerCase();
+
+
+                    const validExtension =
+                        allowedExtensions.some(
+                            extension =>
+                                fileNameLower.endsWith(extension)
+                        );
+
+
+                    if (!validExtension) {
 
                         event.preventDefault();
 
@@ -742,10 +1487,11 @@
                     }
 
 
-                    // 10 MB limit
+                    /* 10 MB */
 
                     const maxSize =
                         10 * 1024 * 1024;
+
 
                     if (file.size > maxSize) {
 
@@ -767,4 +1513,3 @@
 </body>
 
 </html>
-```
