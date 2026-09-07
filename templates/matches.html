@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Matches | SkillMatch</title>
+    <title>
+        {{ page_title|default("My Matches | SkillMatch") }}
+    </title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
@@ -174,8 +175,10 @@
                     Sort:
                 </label>
 
-                <select id="sortMatches"
-                        onchange="sortMatches()">
+                <select
+                    id="sortMatches"
+                    onchange="sortMatches()"
+                >
 
                     <option value="score">
                         Best Match
@@ -202,15 +205,23 @@
 
             {% if matches %}
 
-                <div class="matches-grid" id="matchesGrid">
+                <div
+                    class="matches-grid"
+                    id="matchesGrid"
+                >
 
                     {% for opportunity in matches %}
 
                         <article
                             class="match-card"
-                            data-type="{{ opportunity.type|lower }}"
-                            data-score="{{ opportunity.score or 0 }}"
-                            data-title="{{ opportunity.title|lower }}"
+
+                            data-type="{{ opportunity.type|default('job')|lower }}"
+
+                            data-score="{{ opportunity.score|default(0, true) }}"
+
+                            data-title="{{ opportunity.title|default('')|lower }}"
+
+                            data-date="{{ opportunity.created_at|default('') }}"
                         >
 
 
@@ -221,11 +232,17 @@
                                 <div class="opportunity-icon">
 
                                     {% if opportunity.type|lower == 'job' %}
+
                                         💼
+
                                     {% elif opportunity.type|lower == 'project' %}
+
                                         🚀
+
                                     {% else %}
+
                                         ⭐
+
                                     {% endif %}
 
                                 </div>
@@ -233,7 +250,7 @@
 
                                 <span class="opportunity-type">
 
-                                    {{ opportunity.type|upper }}
+                                    {{ opportunity.type|default('Opportunity')|upper }}
 
                                 </span>
 
@@ -241,7 +258,7 @@
                                 <div class="match-score">
 
                                     <strong>
-                                        {{ opportunity.score or 0 }}%
+                                        {{ opportunity.score|default(0, true) }}%
                                     </strong>
 
                                     <span>
@@ -253,16 +270,18 @@
                             </div>
 
 
-                            <!-- ================= TITLE ================= -->
+                            <!-- ================= CARD CONTENT ================= -->
 
                             <div class="match-card-content">
 
                                 <h2>
 
-                                    <a href="{{ url_for(
-                                        'opportunity',
-                                        id=opportunity.id
-                                    ) }}">
+                                    <a
+                                        href="{{ url_for(
+                                            'opportunity',
+                                            opportunity_id=opportunity.id
+                                        ) }}"
+                                    >
 
                                         {{ opportunity.title }}
 
@@ -280,11 +299,15 @@
                                 {% endif %}
 
 
-                                <p class="match-description">
+                                {% if opportunity.description %}
 
-                                    {{ opportunity.description }}
+                                    <p class="match-description">
 
-                                </p>
+                                        {{ opportunity.description }}
+
+                                    </p>
+
+                                {% endif %}
 
 
                                 <!-- ================= META ================= -->
@@ -326,7 +349,9 @@
                                             {% for skill in opportunity.skills[:6] %}
 
                                                 <span class="skill-tag">
-                                                    {{ skill }}
+
+                                                    {{ skill.name }}
+
                                                 </span>
 
                                             {% endfor %}
@@ -353,7 +378,7 @@
                                             {% for interest in opportunity.interests[:4] %}
 
                                                 <span>
-                                                    🎯 {{ interest }}
+                                                    🎯 {{ interest.name }}
                                                 </span>
 
                                             {% endfor %}
@@ -398,7 +423,7 @@
                                 <a
                                     href="{{ url_for(
                                         'opportunity',
-                                        id=opportunity.id
+                                        opportunity_id=opportunity.id
                                     ) }}"
                                     class="secondary-btn"
                                 >
@@ -406,15 +431,28 @@
                                 </a>
 
 
-                                <a
-                                    href="{{ url_for(
+                                <!--
+                                    Apply route is POST only.
+                                    Therefore use a form instead of an <a>.
+                                -->
+
+                                <form
+                                    action="{{ url_for(
                                         'apply',
-                                        id=opportunity.id
+                                        opportunity_id=opportunity.id
                                     ) }}"
-                                    class="primary-btn"
+                                    method="POST"
+                                    style="display:inline;"
                                 >
-                                    Apply →
-                                </a>
+
+                                    <button
+                                        type="submit"
+                                        class="primary-btn"
+                                    >
+                                        Apply →
+                                    </button>
+
+                                </form>
 
                             </div>
 
@@ -430,7 +468,7 @@
                 <div
                     class="empty-state"
                     id="noFilterResults"
-                    style="display: none;"
+                    style="display:none;"
                 >
 
                     <div class="empty-icon">
@@ -481,6 +519,7 @@
                         >
                             Update Profile
                         </a>
+
 
                         <a
                             href="{{ url_for('resume') }}"
@@ -585,7 +624,9 @@
         let currentFilter = "all";
 
 
-        // ================= FILTER =================
+        // =====================================================
+        // FILTER MATCHES
+        // =====================================================
 
         function filterMatches(type, button) {
 
@@ -597,13 +638,19 @@
             const buttons =
                 document.querySelectorAll(".filter-btn");
 
+
             buttons.forEach(function(btn) {
 
                 btn.classList.remove("active");
 
             });
 
-            button.classList.add("active");
+
+            if (button) {
+
+                button.classList.add("active");
+
+            }
 
 
             let visibleCount = 0;
@@ -613,6 +660,7 @@
 
                 const cardType =
                     card.dataset.type;
+
 
                 if (
                     type === "all" ||
@@ -633,7 +681,10 @@
 
 
             const empty =
-                document.getElementById("noFilterResults");
+                document.getElementById(
+                    "noFilterResults"
+                );
+
 
             if (empty) {
 
@@ -652,14 +703,16 @@
         }
 
 
-        // ================= SORT =================
+        // =====================================================
+        // SORT MATCHES
+        // =====================================================
 
         function sortMatches() {
 
-            const sortValue =
+            const sortElement =
                 document.getElementById(
                     "sortMatches"
-                ).value;
+                );
 
 
             const grid =
@@ -668,9 +721,15 @@
                 );
 
 
-            if (!grid) {
+            if (!sortElement || !grid) {
+
                 return;
+
             }
+
+
+            const sortValue =
+                sortElement.value;
 
 
             const cards =
@@ -681,19 +740,32 @@
                 );
 
 
+            // -------------------------
+            // BEST MATCH
+            // -------------------------
+
             if (sortValue === "score") {
 
                 cards.sort(function(a, b) {
 
                     return (
-                        Number(b.dataset.score) -
-                        Number(a.dataset.score)
+                        Number(
+                            b.dataset.score || 0
+                        )
+                        -
+                        Number(
+                            a.dataset.score || 0
+                        )
                     );
 
                 });
 
             }
 
+
+            // -------------------------
+            // TITLE
+            // -------------------------
 
             else if (sortValue === "title") {
 
@@ -708,6 +780,27 @@
             }
 
 
+            // -------------------------
+            // NEWEST
+            // -------------------------
+
+            else if (sortValue === "newest") {
+
+                cards.sort(function(a, b) {
+
+                    return String(
+                        b.dataset.date || ""
+                    ).localeCompare(
+                        String(
+                            a.dataset.date || ""
+                        )
+                    );
+
+                });
+
+            }
+
+
             cards.forEach(function(card) {
 
                 grid.appendChild(card);
@@ -715,14 +808,14 @@
             });
 
 
-            // Re-apply filter
-
             filterVisibleCards();
 
         }
 
 
-        // ================= APPLY FILTER AFTER SORT =================
+        // =====================================================
+        // RE-APPLY FILTER
+        // =====================================================
 
         function filterVisibleCards() {
 
@@ -730,6 +823,9 @@
                 document.querySelectorAll(
                     ".match-card"
                 );
+
+
+            let visibleCount = 0;
 
 
             cards.forEach(function(card) {
@@ -745,6 +841,8 @@
 
                     card.style.display = "";
 
+                    visibleCount++;
+
                 } else {
 
                     card.style.display = "none";
@@ -753,10 +851,28 @@
 
             });
 
+
+            const empty =
+                document.getElementById(
+                    "noFilterResults"
+                );
+
+
+            if (empty) {
+
+                empty.style.display =
+                    visibleCount === 0
+                        ? "block"
+                        : "none";
+
+            }
+
         }
 
 
-        // ================= ANIMATION =================
+        // =====================================================
+        // CARD ANIMATION
+        // =====================================================
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -768,27 +884,32 @@
                     );
 
 
-                cards.forEach(function(card, index) {
+                cards.forEach(
+                    function(card, index) {
 
-                    card.style.opacity = "0";
-
-                    card.style.transform =
-                        "translateY(15px)";
-
-
-                    setTimeout(function() {
-
-                        card.style.transition =
-                            "all 0.4s ease";
-
-                        card.style.opacity = "1";
+                        card.style.opacity = "0";
 
                         card.style.transform =
-                            "translateY(0)";
+                            "translateY(15px)";
 
-                    }, index * 80);
 
-                });
+                        setTimeout(
+                            function() {
+
+                                card.style.transition =
+                                    "all 0.4s ease";
+
+                                card.style.opacity = "1";
+
+                                card.style.transform =
+                                    "translateY(0)";
+
+                            },
+                            index * 80
+                        );
+
+                    }
+                );
 
             }
         );
@@ -798,4 +919,3 @@
 </body>
 
 </html>
-```
