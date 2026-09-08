@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,10 +15,20 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #6c4df6;
+            --primary-dark: #5035c9;
+            --text: #20213d;
+            --muted: #777991;
+            --background: #f6f5fc;
+            --card: #ffffff;
+            --border: #e8e6f2;
+        }
+
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #f7f8ff;
-            color: #18213d;
+            background: var(--background);
+            color: var(--text);
             line-height: 1.6;
         }
 
@@ -33,58 +44,56 @@
         /* ================= NAVBAR ================= */
 
         .navbar {
-            width: 100%;
-            min-height: 82px;
-            background: #ffffff;
+            height: 76px;
+            background: white;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 7%;
-            border-bottom: 1px solid #e8e9f2;
+            padding: 0 6%;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .logo {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
-            color: #202746;
-            letter-spacing: -1.5px;
+            color: var(--text);
         }
 
         .logo span {
-            color: #7161e8;
+            color: var(--primary);
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 34px;
+            gap: 8px;
         }
 
         .nav-links a {
-            color: #59617b;
-            font-size: 16px;
+            padding: 11px 15px;
+            border-radius: 10px;
+            color: #5c6078;
             font-weight: 600;
-            transition: 0.25s ease;
+            transition: 0.2s ease;
         }
 
         .nav-links a:hover,
         .nav-links a.active {
-            color: #6d5ce7;
+            color: var(--primary);
+            background: #f0edff;
         }
 
         .nav-links .login-btn {
-            color: #ffffff;
-            background: #6d5ce7;
-            padding: 13px 28px;
-            border-radius: 12px;
+            background: var(--primary);
+            color: white;
         }
 
         .nav-links .login-btn:hover {
-            color: #ffffff;
-            background: #5847d5;
+            background: var(--primary-dark);
+            color: white;
         }
 
         /* ================= PAGE ================= */
@@ -541,6 +550,10 @@
             font-weight: 700;
         }
 
+        .view-resume:hover {
+            background: #5e4ed8;
+        }
+
         /* ================= EMPTY RESULT ================= */
 
         .empty-result {
@@ -667,40 +680,43 @@
         }
 
         /* ================= FOOTER ================= */
-/* ================= FOOTER ================= */
 
-.footer {
-    background: #202238;
-    color: #d9d9e5;
-    padding: 45px 0 25px;
-    margin-top: 40px;
-}
+        .footer {
+            background: #202238;
+            color: #d9d9e5;
+            padding: 45px 0 25px;
+            margin-top: 40px;
+        }
 
-.footer-bottom {
-    width: min(1120px, 92%);
-    margin: 0 auto;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    text-align: center;
-}
+        .footer-bottom {
+            width: min(1120px, 92%);
+            margin: 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: center;
+        }
 
-.footer-bottom p {
-    margin: 0;
-    color: #a9abc0;
-    font-size: 14px;
-}
-       
+        .footer-bottom p {
+            margin: 0;
+            color: #a9abc0;
+            font-size: 14px;
+        }
 
         /* ================= RESPONSIVE ================= */
 
         @media (max-width: 900px) {
 
             .navbar {
-                padding: 0 4%;
+                padding: 0 20px;
             }
 
             .nav-links {
-                gap: 15px;
+                gap: 2px;
+            }
+
+            .nav-links a {
+                padding: 9px 8px;
+                font-size: 13px;
             }
 
             .resume-grid {
@@ -715,34 +731,62 @@
         @media (max-width: 650px) {
 
             .navbar {
-                min-height: auto;
-                padding: 18px 5%;
-                flex-direction: column;
-                gap: 15px;
+                height: auto;
+                padding: 16px 18px;
+                display: block;
+            }
+
+            .logo {
+                margin-bottom: 12px;
             }
 
             .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 12px 18px;
+                overflow-x: auto;
+                white-space: nowrap;
+                display: flex;
+                gap: 6px;
+            }
+
+            .nav-links a {
+                padding: 9px 10px;
+                font-size: 12px;
+                flex-shrink: 0;
             }
 
             .resume-page {
-                padding-top: 40px;
+                padding: 40px 0 60px;
             }
 
             .resume-upload-card,
             .resume-result-card {
                 padding: 22px;
                 border-radius: 17px;
+                min-height: auto;
             }
 
             .page-header h1 {
                 font-size: 36px;
             }
 
+            .page-header p {
+                font-size: 15px;
+            }
+
             .screening-section {
                 margin-top: 55px;
+            }
+
+            .section-heading h2 {
+                font-size: 28px;
+            }
+
+            .resume-file {
+                flex-wrap: wrap;
+            }
+
+            .view-resume {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -1280,12 +1324,16 @@
     <!-- ================= FOOTER ================= -->
 
     <footer class="footer">
-    <div class="footer-bottom">
-        <p>
-            © 2026 SkillMatch. All rights reserved.
-        </p>
-    </div>
-   </footer>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 SkillMatch. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
 
 
     <!-- ================= JAVASCRIPT ================= -->
@@ -1520,3 +1568,4 @@
 </body>
 
 </html>
+
