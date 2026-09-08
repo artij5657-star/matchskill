@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,11 +12,1063 @@
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        /* =====================================================
+           MATCHES PAGE
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6c4df6;
+            --primary-dark: #5035c9;
+            --text: #20213d;
+            --muted: #777991;
+            --background: #f6f5fc;
+            --card: #ffffff;
+            --border: #e8e6f2;
+            --success: #20b486;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =====================================================
+           NAVBAR - SAME AS PROFILE PAGE
+        ===================================================== */
+
+        .navbar {
+            height: 76px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            padding: 11px 15px;
+            border-radius: 10px;
+
+            color: #5c6078;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            background: #f0edff;
+        }
+
+        .nav-links .login-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-links .login-btn:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .matches-page {
+            max-width: 1250px;
+            margin: auto;
+            padding: 55px 24px 70px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .matches-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 30px;
+
+            margin-bottom: 30px;
+        }
+
+        .section-label {
+            display: inline-block;
+
+            color: var(--primary);
+
+            font-size: 12px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 8px;
+        }
+
+        .matches-header h1 {
+            font-size: 42px;
+            line-height: 1.15;
+
+            margin: 0 0 10px;
+        }
+
+        .matches-header h1 span {
+            color: var(--primary);
+        }
+
+        .matches-header p {
+            margin: 0;
+
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           MATCH SUMMARY
+        ===================================================== */
+
+        .match-summary {
+            min-width: 210px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            padding: 18px 22px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 10px 25px rgba(54, 42, 110, 0.06);
+        }
+
+        .summary-icon {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 14px;
+
+            background: #f0edff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .match-summary strong {
+            display: block;
+
+            color: var(--primary);
+
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .match-summary span {
+            color: var(--muted);
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           ALERT
+        ===================================================== */
+
+        .alert {
+            padding: 13px 17px;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            background: #efeaff;
+            color: var(--primary-dark);
+
+            font-weight: 600;
+        }
+
+        .alert.error {
+            background: #fff0f0;
+            color: #c0392b;
+        }
+
+        .alert.success {
+            background: #eafaf4;
+            color: #138a65;
+        }
+
+
+        /* =====================================================
+           FILTER BAR
+        ===================================================== */
+
+        .filter-bar {
+            background: white;
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            padding: 18px 20px;
+
+            margin-bottom: 28px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(54, 42, 110, 0.05);
+        }
+
+        .filter-title {
+            display: flex;
+            flex-direction: column;
+
+            min-width: 180px;
+        }
+
+        .filter-title strong {
+            font-size: 15px;
+        }
+
+        .filter-title span {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            border: 1px solid #ddd8f6;
+
+            background: #f8f6ff;
+
+            color: #5c45cf;
+
+            padding: 9px 15px;
+
+            border-radius: 999px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+
+            border-color: var(--primary);
+        }
+
+        .sort-container {
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+        }
+
+        .sort-container label {
+            color: var(--muted);
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .sort-container select {
+            border: 1px solid #ddd9ed;
+
+            background: #faf9fe;
+
+            border-radius: 10px;
+
+            padding: 9px 12px;
+
+            color: var(--text);
+
+            font-weight: 600;
+
+            outline: none;
+
+            cursor: pointer;
+        }
+
+        .sort-container select:focus {
+            border-color: var(--primary);
+        }
+
+
+        /* =====================================================
+           MATCHES GRID
+        ===================================================== */
+
+        .matches-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 22px;
+        }
+
+
+        /* =====================================================
+           MATCH CARD
+        ===================================================== */
+
+        .match-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+
+            box-shadow:
+                0 10px 30px rgba(54, 42, 110, 0.06);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .match-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 16px 35px rgba(54, 42, 110, 0.10);
+        }
+
+
+        /* =====================================================
+           CARD TOP
+        ===================================================== */
+
+        .match-card-top {
+            padding: 20px 22px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .opportunity-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 13px;
+
+            background: #f0edff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .opportunity-type {
+            color: var(--primary);
+
+            background: #f4f1ff;
+
+            border-radius: 999px;
+
+            padding: 6px 10px;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .match-score {
+            margin-left: auto;
+
+            text-align: right;
+        }
+
+        .match-score strong {
+            display: block;
+
+            color: var(--success);
+
+            font-size: 20px;
+        }
+
+        .match-score span {
+            color: var(--muted);
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           CARD CONTENT
+        ===================================================== */
+
+        .match-card-content {
+            padding: 22px;
+
+            flex: 1;
+        }
+
+        .match-card-content h2 {
+            margin: 0 0 7px;
+
+            font-size: 23px;
+
+            line-height: 1.3;
+        }
+
+        .match-card-content h2 a {
+            color: var(--text);
+
+            transition: 0.2s ease;
+        }
+
+        .match-card-content h2 a:hover {
+            color: var(--primary);
+        }
+
+        .company-name {
+            margin: 0 0 13px;
+
+            color: #62667d;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .match-description {
+            margin: 0 0 18px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           META
+        ===================================================== */
+
+        .match-meta {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            padding-bottom: 18px;
+
+            border-bottom: 1px solid var(--border);
+
+            color: #62667d;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MATCH SECTION
+        ===================================================== */
+
+        .match-section {
+            margin-top: 18px;
+        }
+
+        .match-section h4 {
+            margin: 0 0 9px;
+
+            font-size: 13px;
+        }
+
+        .skill-tags,
+        .interest-chips {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 7px;
+        }
+
+        .skill-tag {
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            background: #f0edff;
+
+            color: #5c45cf;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .interest-chips span {
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            background: #f5f5fa;
+
+            color: #62667d;
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           MATCH REASON
+        ===================================================== */
+
+        .match-reason {
+            margin-top: 20px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background: #faf9fe;
+
+            border: 1px solid #eeeaf8;
+
+            display: flex;
+
+            gap: 11px;
+        }
+
+        .reason-icon {
+            font-size: 20px;
+        }
+
+        .match-reason strong {
+            display: block;
+
+            font-size: 13px;
+
+            margin-bottom: 2px;
+        }
+
+        .match-reason p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           CARD FOOTER
+        ===================================================== */
+
+        .match-card-footer {
+            padding: 17px 22px;
+
+            border-top: 1px solid var(--border);
+
+            display: flex;
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 11px 18px;
+
+            font-weight: 800;
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+
+            color: white;
+
+            box-shadow:
+                0 8px 18px rgba(108, 77, 246, 0.18);
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-dark);
+
+            transform: translateY(-1px);
+        }
+
+        .secondary-btn {
+            background: #f0eef5;
+
+            color: #62667d;
+        }
+
+        .secondary-btn:hover {
+            background: #e6e3ed;
+
+            color: var(--text);
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 55px 25px;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 30px rgba(54, 42, 110, 0.05);
+        }
+
+        .empty-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 20px;
+
+            background: #f0edff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 30px;
+        }
+
+        .empty-state h2,
+        .empty-state h3 {
+            margin: 0 0 8px;
+
+            font-size: 24px;
+        }
+
+        .empty-state p {
+            max-width: 600px;
+
+            margin: 7px auto;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        .empty-actions {
+            margin-top: 22px;
+
+            display: flex;
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+
+        /* =====================================================
+           MATCHING INFO
+        ===================================================== */
+
+        .matching-info {
+            margin-top: 30px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 25px;
+
+            box-shadow:
+                0 10px 30px rgba(54, 42, 110, 0.05);
+        }
+
+        .matching-info-content {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 16px;
+        }
+
+        .matching-info-icon {
+            width: 52px;
+            height: 52px;
+
+            flex-shrink: 0;
+
+            border-radius: 14px;
+
+            background: #f0edff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .matching-info h2 {
+            margin: 0 0 6px;
+
+            font-size: 20px;
+        }
+
+        .matching-info p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            max-width: 650px;
+        }
+
+        .matching-factors {
+            display: flex;
+
+            gap: 12px;
+        }
+
+        .factor {
+            min-width: 90px;
+
+            padding: 13px;
+
+            border-radius: 13px;
+
+            background: #faf9fe;
+
+            border: 1px solid var(--border);
+
+            text-align: center;
+        }
+
+        .factor strong {
+            display: block;
+
+            color: var(--primary);
+
+            font-size: 20px;
+        }
+
+        .factor span {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FOOTER - SAME AS PROFILE
+        ===================================================== */
+
+        .footer {
+            background: #202238;
+
+            color: #d9d9e5;
+
+            padding: 45px 0 25px;
+
+            margin-top: 40px;
+        }
+
+        .footer-bottom {
+            width: min(1120px, 92%);
+
+            margin: 0 auto;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.12);
+
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+
+            color: #a9abc0;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 2px;
+            }
+
+            .nav-links a {
+                padding: 9px 8px;
+                font-size: 13px;
+            }
+
+            .matches-header {
+                align-items: flex-start;
+            }
+
+            .matches-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .matching-info {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .matching-factors {
+                width: 100%;
+            }
+
+            .factor {
+                flex: 1;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 16px 18px;
+
+                display: block;
+            }
+
+            .logo {
+                margin-bottom: 12px;
+            }
+
+            .nav-links {
+                overflow-x: auto;
+
+                white-space: nowrap;
+            }
+
+            .matches-page {
+                padding: 35px 15px;
+            }
+
+            .matches-header {
+                flex-direction: column;
+            }
+
+            .matches-header h1 {
+                font-size: 34px;
+            }
+
+            .match-summary {
+                width: 100%;
+            }
+
+            .filter-bar {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .filter-title {
+                min-width: auto;
+            }
+
+            .sort-container {
+                margin-left: 0;
+
+                width: 100%;
+            }
+
+            .sort-container select {
+                flex: 1;
+            }
+
+            .match-card-top {
+                padding: 17px;
+            }
+
+            .match-card-content {
+                padding: 18px;
+            }
+
+            .match-card-footer {
+                padding: 15px 18px;
+
+                flex-direction: column;
+            }
+
+            .match-card-footer a,
+            .match-card-footer form,
+            .match-card-footer button {
+                width: 100%;
+            }
+
+            .matching-info {
+                padding: 20px;
+            }
+
+            .matching-info-content {
+                flex-direction: column;
+            }
+
+            .matching-factors {
+                flex-direction: column;
+            }
+
+            .factor {
+                width: 100%;
+            }
+
+            .empty-actions {
+                flex-direction: column;
+            }
+
+            .empty-actions a {
+                width: 100%;
+            }
+        }
+
+    </style>
 </head>
+
 
 <body>
 
-    <!-- ================= NAVBAR ================= -->
+
+    <!-- =====================================================
+         NAVBAR
+    ===================================================== -->
 
     <nav class="navbar">
 
@@ -54,12 +1107,16 @@
     </nav>
 
 
-    <!-- ================= MAIN ================= -->
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
 
     <main class="matches-page">
 
 
-        <!-- ================= HEADER ================= -->
+        <!-- =================================================
+             HEADER
+        ================================================= -->
 
         <section class="matches-header">
 
@@ -104,7 +1161,9 @@
         </section>
 
 
-        <!-- ================= FLASH MESSAGES ================= -->
+        <!-- =================================================
+             FLASH MESSAGES
+        ================================================= -->
 
         {% with messages = get_flashed_messages(with_categories=true) %}
 
@@ -123,7 +1182,9 @@
         {% endwith %}
 
 
-        <!-- ================= FILTER BAR ================= -->
+        <!-- =================================================
+             FILTER BAR
+        ================================================= -->
 
         <section class="filter-bar">
 
@@ -199,7 +1260,9 @@
         </section>
 
 
-        <!-- ================= MATCHES ================= -->
+        <!-- =================================================
+             MATCHES
+        ================================================= -->
 
         <section class="matches-container">
 
@@ -225,7 +1288,7 @@
                         >
 
 
-                            <!-- ================= CARD TOP ================= -->
+                            <!-- CARD TOP -->
 
                             <div class="match-card-top">
 
@@ -270,7 +1333,7 @@
                             </div>
 
 
-                            <!-- ================= CARD CONTENT ================= -->
+                            <!-- CARD CONTENT -->
 
                             <div class="match-card-content">
 
@@ -282,9 +1345,7 @@
                                             opportunity_id=opportunity.id
                                         ) }}"
                                     >
-
                                         {{ opportunity.title }}
-
                                     </a>
 
                                 </h2>
@@ -302,15 +1363,13 @@
                                 {% if opportunity.description %}
 
                                     <p class="match-description">
-
                                         {{ opportunity.description }}
-
                                     </p>
 
                                 {% endif %}
 
 
-                                <!-- ================= META ================= -->
+                                <!-- META -->
 
                                 <div class="match-meta">
 
@@ -334,7 +1393,7 @@
                                 </div>
 
 
-                                <!-- ================= SKILLS ================= -->
+                                <!-- SKILLS -->
 
                                 {% if opportunity.skills %}
 
@@ -349,9 +1408,7 @@
                                             {% for skill in opportunity.skills[:6] %}
 
                                                 <span class="skill-tag">
-
                                                     {{ skill.name }}
-
                                                 </span>
 
                                             {% endfor %}
@@ -363,7 +1420,7 @@
                                 {% endif %}
 
 
-                                <!-- ================= INTERESTS ================= -->
+                                <!-- INTERESTS -->
 
                                 {% if opportunity.interests %}
 
@@ -390,7 +1447,7 @@
                                 {% endif %}
 
 
-                                <!-- ================= MATCH REASON ================= -->
+                                <!-- MATCH REASON -->
 
                                 <div class="match-reason">
 
@@ -416,7 +1473,7 @@
                             </div>
 
 
-                            <!-- ================= CARD FOOTER ================= -->
+                            <!-- CARD FOOTER -->
 
                             <div class="match-card-footer">
 
@@ -431,18 +1488,12 @@
                                 </a>
 
 
-                                <!--
-                                    Apply route is POST only.
-                                    Therefore use a form instead of an <a>.
-                                -->
-
                                 <form
                                     action="{{ url_for(
                                         'apply',
                                         opportunity_id=opportunity.id
                                     ) }}"
                                     method="POST"
-                                    style="display:inline;"
                                 >
 
                                     <button
@@ -463,7 +1514,7 @@
                 </div>
 
 
-                <!-- ================= NO FILTER RESULT ================= -->
+                <!-- NO FILTER RESULT -->
 
                 <div
                     class="empty-state"
@@ -488,7 +1539,8 @@
 
             {% else %}
 
-                <!-- ================= NO MATCHES ================= -->
+
+                <!-- NO MATCHES -->
 
                 <div class="empty-state no-matches">
 
@@ -537,7 +1589,9 @@
         </section>
 
 
-        <!-- ================= MATCHING EXPLANATION ================= -->
+        <!-- =================================================
+             MATCHING INFORMATION
+        ================================================= -->
 
         <section class="matching-info">
 
@@ -602,7 +1656,9 @@
     </main>
 
 
-    <!-- ================= FOOTER ================= -->
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
 
     <footer class="footer">
 
@@ -617,16 +1673,18 @@
     </footer>
 
 
-    <!-- ================= JAVASCRIPT ================= -->
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
 
     <script>
 
         let currentFilter = "all";
 
 
-        // =====================================================
-        // FILTER MATCHES
-        // =====================================================
+        /* =================================================
+           FILTER MATCHES
+        ================================================= */
 
         function filterMatches(type, button) {
 
@@ -688,24 +1746,19 @@
 
             if (empty) {
 
-                if (visibleCount === 0) {
-
-                    empty.style.display = "block";
-
-                } else {
-
-                    empty.style.display = "none";
-
-                }
+                empty.style.display =
+                    visibleCount === 0
+                        ? "block"
+                        : "none";
 
             }
 
         }
 
 
-        // =====================================================
-        // SORT MATCHES
-        // =====================================================
+        /* =================================================
+           SORT MATCHES
+        ================================================= */
 
         function sortMatches() {
 
@@ -740,10 +1793,6 @@
                 );
 
 
-            // -------------------------
-            // BEST MATCH
-            // -------------------------
-
             if (sortValue === "score") {
 
                 cards.sort(function(a, b) {
@@ -763,10 +1812,6 @@
             }
 
 
-            // -------------------------
-            // TITLE
-            // -------------------------
-
             else if (sortValue === "title") {
 
                 cards.sort(function(a, b) {
@@ -779,10 +1824,6 @@
 
             }
 
-
-            // -------------------------
-            // NEWEST
-            // -------------------------
 
             else if (sortValue === "newest") {
 
@@ -813,9 +1854,9 @@
         }
 
 
-        // =====================================================
-        // RE-APPLY FILTER
-        // =====================================================
+        /* =================================================
+           RE-APPLY FILTER
+        ================================================= */
 
         function filterVisibleCards() {
 
@@ -870,9 +1911,9 @@
         }
 
 
-        // =====================================================
-        // CARD ANIMATION
-        // =====================================================
+        /* =================================================
+           CARD ANIMATION
+        ================================================= */
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -919,3 +1960,4 @@
 </body>
 
 </html>
+
