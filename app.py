@@ -665,6 +665,12 @@ def register():
 )
 def login():
 
+    # Already logged in → directly dashboard
+    if "user_id" in session:
+        return redirect(
+            url_for("dashboard")
+        )
+
     if request.method == "POST":
 
         email = request.form.get(
